@@ -4,7 +4,7 @@
 
 int main()
 {
-	Matrix a(3, 4);
+	Matrix a(4, 3);
 	a.fill(2);
 	std::cout << a.str();
 
@@ -12,8 +12,11 @@ int main()
 	b.fill(1);
 	std::cout << b.str();
 
-	a.add(&b);
-	std::cout << a.str();
+	Matrix* c = Matrix::dotProd(&a, &b);
+
+	std::cout << c->str();
+
+	delete c;
 
 	return -1;
 }

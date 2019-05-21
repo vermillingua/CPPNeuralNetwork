@@ -19,6 +19,10 @@ private:
 		matrix[row * cols + col] = value;
 	}	
 
+	int size() {
+		return rows * cols;
+	}
+
 public:
 	Matrix(int rows, int cols);
 	~Matrix();
@@ -34,7 +38,7 @@ public:
 	void fill(double value);
 	void add(Matrix* matrix);
 	void mult(Matrix* matrix);
-	Matrix* dotProd(Matrix* a, Matrix* b);
+	static Matrix* dotProd(Matrix* a, Matrix* b);
 
 	std::string str();
 };

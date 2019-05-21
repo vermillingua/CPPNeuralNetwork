@@ -20,22 +20,39 @@ void Matrix::fill(double value)
 		this->matrix[i] = value;
 }
 
-void Matrix::add(Matrix* matrix) // Add check for correct dimentions?
+void Matrix::add(Matrix* matrix) 
 {
-	for (int i = 0; i < rows * cols; i++) 
+	if(this->size() != matrix->size())
+		throw std::runtime_error("Matrices must be the same size for them to be added!");
+	for (int i = 0; i < size(); i++) 
 		this->matrix[i] += matrix->matrix[i];
 }
 
-void Matrix::mult(Matrix* matrix) // Add check for correct dimetions?
+void Matrix::mult(Matrix* matrix) 
 {
-	for (int i = 0; i < rows * cols; i++)
+	if(this->size() != matrix->size())
+		throw std::runtime_error("Matrices must be the same size for them to be multiplied!");
+	for (int i = 0; i < size(); i++) 
 		this->matrix[i] *= matrix->matrix[i];
 }
 
 Matrix* Matrix::dotProd(Matrix* a, Matrix* b)
 {
+	if(a->getCols() != b->getRows())
+		throw std::runtime_error("Matrices must be the correct size to calculate their dot product!");
 	Matrix* result = new Matrix(a->getRows(), b->getCols());
-	//TODO Actually implement. Althought we might not need it.
+
+	for (int r = 0; r < result->getRows(); r++)
+	{
+		for (int c = 0; c < result->getCols(); c++)
+		{
+			double sum = 0;
+			for (int i = 0; i < a->getCols(); i++)
+				sum += a->get(r, i) * b->get(i, c);
+			result->set(r, c, sum);
+		}
+	}
+
 	return result;
 }
 
