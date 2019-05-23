@@ -14,10 +14,10 @@ Matrix::~Matrix()
 	delete [] matrix;
 }
 
-void Matrix::fill(double value)
+void Matrix::map(double (*foo)(double))
 {
-	for (int i = 0; i < rows * cols; i++)
-		this->matrix[i] = value;
+	for (int i = 0; i < size(); i++) 
+		matrix[i] = foo(matrix[i]);
 }
 
 void Matrix::add(Matrix* matrix) 

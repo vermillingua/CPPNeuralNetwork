@@ -1,20 +1,35 @@
 #include <iostream>
+#include <random>
 
 #include "matrix/Matrix.hpp"
+
+std::uniform_real_distribution<double> range(-1, 1);
+std::default_random_engine engine;
+
+double rand(double a)
+{
+	return range(engine);
+}
+
+double set(double a)
+{
+	return 2;
+}
 
 int main()
 {
 	Matrix a(4, 3);
-	a.fill(2);
-	std::cout << a.str();
+	//a.map([](double a) {return 1.0;}); // Lambda function doesn't work
+	a.map(set);
+	std::cout << a.str() << "\n";
 
 	Matrix b(3, 4);
-	b.fill(1);
-	std::cout << b.str();
+	b.map(rand);
+	std::cout << b.str() << "\n";
 
 	Matrix* c = Matrix::dotProd(&a, &b);
 
-	std::cout << c->str();
+	std::cout << c->str() << "\n";
 
 	delete c;
 

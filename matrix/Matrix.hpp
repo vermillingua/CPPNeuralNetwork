@@ -23,10 +23,6 @@ private:
 		return rows * cols;
 	}
 
-public:
-	Matrix(int rows, int cols);
-	~Matrix();
-
 	int getRows() {
 		return rows;
 	}
@@ -35,7 +31,12 @@ public:
 		return cols;
 	}
 
-	void fill(double value);
+public:
+	Matrix(int rows, int cols);
+	~Matrix();
+
+	void map(double (*foo)(double));
+
 	void add(Matrix* matrix);
 	void mult(Matrix* matrix);
 	static Matrix* dotProd(Matrix* a, Matrix* b);
