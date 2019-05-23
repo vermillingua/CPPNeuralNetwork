@@ -1,0 +1,8 @@
+# Ignore compiled files
+*.o
+
+# Ignore the executable
+Main
+
+# Ignore files currently open in vim
+*.swp
