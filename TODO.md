@@ -23,3 +23,10 @@
 - matrix[] weights
 - matrix[] biases
 
+## Makefile Links
+
+[A Great in Depth Tutorial](http://www.cs.bu.edu/teaching/cpp/writing-makefiles/)
+
+[A Different Tutorial with some Java stuff](https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html)
+
+
