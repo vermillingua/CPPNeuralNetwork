@@ -18,7 +18,6 @@ double set(double a)
 
 int main(int argc, char** argv)
 {
-	std::cout << "Hello World!" << std::endl;
 	Matrix a(4, 3);
 	//a.map([](double a) {return 1.0;}); // Lambda function doesn't work
 	a.map(set);
