@@ -30,11 +30,7 @@ Matrix* NeuralNetwork::feedForward(Matrix* input)
 	Matrix* result = input;
 	for (int i = 0; i < layers; i++) 
 	{
-		Matrix* temp = result;
-		result = Matrix::dotProd(weights[i], result);
-		result->add(biases[i]);
-
-		delete temp; //Memory managemnt. I don't know of a better way
+		*result = *weights[i] * *result + *biases[i];
 	}
 	return result;
 }

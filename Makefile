@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -g
+CXXFLAGS = -std=c++17 -Wall -g
 
 Main: Main.o neural-network/NeuralNetwork.o matrix/Matrix.o
 	$(CXX) $(CXXFLAGS) -o Main Main.o neural-network/NeuralNetwork.o matrix/Matrix.o

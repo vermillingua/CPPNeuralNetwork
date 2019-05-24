@@ -2,46 +2,50 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
-#include <string>
+#include <iostream>
+#include <initializer_list>
 
 struct Matrix
 {
 private:
-	double* matrix;
 	int rows;
 	int cols;
+	double* elements;
 
-	double get(int row, int col) {
-		return matrix[row * cols + col];
-	}
-
-	void set(int row, int col, double value) {
-		matrix[row * cols + col] = value;
-	}	
-
-	int size() {
+	inline int size() const {
 		return rows * cols;
 	}
 
-	int getRows() {
-		return rows;
+	inline void set(int row, int col, double value) {
+		elements[row * cols + col] = value;
 	}
-	
-	int getCols() {
-		return cols;
+
+	inline double get(int row, int col) const {
+		return elements[row * cols + col];
 	}
+
+	void setDimentions(int rows, int cols);
 
 public:
+	Matrix();
 	Matrix(int rows, int cols);
+	Matrix(int rows, int cols, double value);
+	Matrix(std::initializer_list<std::initializer_list<double> > input);
+
+	static Matrix identity(int dimention);
+
 	~Matrix();
 
-	void map(double (*foo)(double));
+	friend Matrix operator*(const Matrix& left, const Matrix& right);
+	friend Matrix operator+(const Matrix& left, const Matrix& right);
+	friend Matrix operator-(const Matrix& left, const Matrix& right);
 
-	void add(Matrix* matrix);
-	void mult(Matrix* matrix);
-	static Matrix* dotProd(Matrix* a, Matrix* b);
+	Matrix& operator=(const Matrix& other);
+	Matrix& operator*=(const Matrix& other);
+	Matrix& operator+=(const Matrix& other);
+	Matrix& operator-=(const Matrix& other);
 
-	std::string str();
+	friend std::ostream& operator<<(std::ostream& cout, const Matrix& matrix);
 };
 
 #endif /* MATRIX_HPP */

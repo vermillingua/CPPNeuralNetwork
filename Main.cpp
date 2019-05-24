@@ -19,19 +19,11 @@ double set(double a)
 int main(int argc, char** argv)
 {
 	Matrix a(4, 3);
-	//a.map([](double a) {return 1.0;}); // Lambda function doesn't work
-	a.map(set);
-	std::cout << a.str() << "\n";
 
 	Matrix b(3, 4);
-	b.map(rand);
-	std::cout << b.str() << "\n";
 
-	Matrix* c = Matrix::dotProd(&a, &b);
-
-	std::cout << c->str() << "\n";
-
-	delete c;
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
 
 	return -1;
 }
