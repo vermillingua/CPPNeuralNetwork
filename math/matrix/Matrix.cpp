@@ -39,7 +39,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double> > input)
 	}
 }
 
-void Matrix::setDimentions(int rows, int cols)
+void Matrix::setDimensions(int rows, int cols)
 {
 	if(this->rows != rows || this->cols != cols)
 	{
@@ -50,10 +50,10 @@ void Matrix::setDimentions(int rows, int cols)
 	}
 }
 
-Matrix Matrix::identity(int dimentions)
+Matrix Matrix::identity(int dimensions)
 {
-	Matrix result(dimentions, dimentions, 0);
-	for (int i = 0; i < dimentions; i++) 
+	Matrix result(dimensions, dimensions, 0);
+	for (int i = 0; i < dimensions; i++) 
 		result.set(i, i, 1);
 	return result;
 }
@@ -91,7 +91,7 @@ void Matrix::map(double (*foo)(double))
 Matrix operator*(const Matrix& left, const Matrix& right)
 {
 	if(left.cols != right.rows)
-		throw std::runtime_error("Invalid dimentions for multiplication!");
+		throw std::runtime_error("Invalid dimensions for multiplication!");
 	Matrix result(left.rows, right.cols);
 
 	for (int r = 0; r < result.rows; r++) 
@@ -121,7 +121,7 @@ Matrix operator*(const Matrix& left, const int& right)
 Matrix operator+(const Matrix& left, const Matrix& right)
 {
 	if(left.size() != right.size())
-		throw std::runtime_error("Invalid dimentions for addition!");
+		throw std::runtime_error("Invalid dimensions for addition!");
 
 	Matrix result(left.rows, left.cols);
 
@@ -144,7 +144,7 @@ Matrix operator+(const Matrix& left, const int& right)
 Matrix operator-(const Matrix& left, const Matrix& right)
 {
 	if(left.size() != right.size())
-		throw std::runtime_error("Invalid dimentions for subtraction!");
+		throw std::runtime_error("Invalid dimensions for subtraction!");
 	
 	Matrix result(left.rows, left.cols);
 
@@ -179,7 +179,7 @@ Matrix& Matrix::operator=(const Matrix& other)
 {
 	if (this != &other)
 	{
-		setDimentions(other.rows, other.cols);
+		setDimensions(other.rows, other.cols);
 		std::copy(other.elements, other.elements + other.size(), elements);
 	}
 	return *this;
@@ -202,7 +202,7 @@ Matrix& Matrix::operator*=(const int& other)
 Matrix& Matrix::operator+=(const Matrix& other)
 {
 	if(size() != other.size())
-		throw std::runtime_error("Invalid dimentions for addition!");
+		throw std::runtime_error("Invalid dimensions for addition!");
 
 	for (int i = 0; i < size(); i++)
 		elements[i] += other.elements[i];
@@ -221,7 +221,7 @@ Matrix& Matrix::operator+=(const int& other)
 Matrix& Matrix::operator-=(const Matrix& other)
 {
 	if(size() != other.size())
-		throw std::runtime_error("Invalid dimentions for subtraction!");
+		throw std::runtime_error("Invalid dimensions for subtraction!");
 	
 	for (int i = 0; i < size(); i++)
 		elements[i] -= other.elements[i];

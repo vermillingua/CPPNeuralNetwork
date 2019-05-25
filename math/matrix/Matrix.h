@@ -24,7 +24,7 @@ private:
 		return elements[row * cols + col];
 	}
 
-	void setDimentions(int rows, int cols);
+	void setDimensions(int rows, int cols);
 
 public:
 	Matrix();
@@ -32,7 +32,7 @@ public:
 	Matrix(int rows, int cols, double value);
 	Matrix(std::initializer_list<std::initializer_list<double> > input);
 
-	static Matrix identity(int dimention);
+	static Matrix identity(int dimension);
 
 	~Matrix();
 
@@ -42,13 +42,13 @@ public:
 
 	void map(double (*foo)(double));
 
-	friend Matrix operator*(const Matrix& left, const Matrix& right);
-	friend Matrix operator*(const Matrix& left, const int& right);
-	friend Matrix operator+(const Matrix& left, const Matrix& right);
-	friend Matrix operator+(const Matrix& left, const int& right);
-	friend Matrix operator-(const Matrix& left, const Matrix& right);
-	friend Matrix operator-(const Matrix& left, const int& right);
-	friend Matrix operator^(const Matrix& left, const int& right);
+    friend Matrix operator*(const Matrix& left, const Matrix& right);
+    friend Matrix operator*(const Matrix& left, const int& right);
+    friend Matrix operator+(const Matrix& left, const Matrix& right);
+    friend Matrix operator+(const Matrix& left, const int& right);
+    friend Matrix operator-(const Matrix& left, const Matrix& right);
+    friend Matrix operator-(const Matrix& left, const int& right);
+    friend Matrix operator^(const Matrix& left, const int& right);
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);

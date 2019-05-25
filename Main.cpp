@@ -1,7 +1,7 @@
 #include <iostream>
 #include <random>
 
-#include "matrix/Matrix.h"
+#include "math/matrix/Matrix.h"
 
 std::uniform_real_distribution<double> range(-1, 1);
 std::default_random_engine engine;
