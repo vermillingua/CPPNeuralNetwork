@@ -6,3 +6,6 @@ Main
 
 # Ignore files currently open in vim
 *.swp
+
+# Mac system files
+*.DS_Store

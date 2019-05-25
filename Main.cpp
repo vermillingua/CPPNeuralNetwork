@@ -1,7 +1,7 @@
 #include <iostream>
 #include <random>
 
-#include "matrix/Matrix.hpp"
+#include "matrix/Matrix.h"
 
 std::uniform_real_distribution<double> range(-1, 1);
 std::default_random_engine engine;
@@ -11,19 +11,19 @@ double rand(double a)
 	return range(engine);
 }
 
-double set(double a)
-{
-	return 2;
-}
-
 int main(int argc, char** argv)
 {
-	Matrix a(4, 3);
+	Matrix a = {{1, 2, 3},
+				{2, 3, 4},
+				{3, 4, 5},
+				{4, 5, 6}};
 
-	Matrix b(3, 4);
+	Matrix b(3, 2);
+	b.map(rand);
 
 	std::cout << a << std::endl;
 	std::cout << b << std::endl;
+	std::cout << (a * b) << std::endl;
 
 	return -1;
 }

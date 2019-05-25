@@ -1,6 +1,6 @@
 
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <iostream>
 #include <initializer_list>
@@ -36,16 +36,29 @@ public:
 
 	~Matrix();
 
+	double trace() const;
+	Matrix transpose() const;
+	//TODO double determinant() const;
+
+	void map(double (*foo)(double));
+
 	friend Matrix operator*(const Matrix& left, const Matrix& right);
+	friend Matrix operator*(const Matrix& left, const int& right);
 	friend Matrix operator+(const Matrix& left, const Matrix& right);
+	friend Matrix operator+(const Matrix& left, const int& right);
 	friend Matrix operator-(const Matrix& left, const Matrix& right);
+	friend Matrix operator-(const Matrix& left, const int& right);
+	friend Matrix operator^(const Matrix& left, const int& right);
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);
+	Matrix& operator*=(const int& other);
 	Matrix& operator+=(const Matrix& other);
+	Matrix& operator+=(const int& other);
 	Matrix& operator-=(const Matrix& other);
+	Matrix& operator-=(const int& other);
 
 	friend std::ostream& operator<<(std::ostream& cout, const Matrix& matrix);
 };
 
-#endif /* MATRIX_HPP */
+#endif /* MATRIX_H */
