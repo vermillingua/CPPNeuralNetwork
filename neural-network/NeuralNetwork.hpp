@@ -3,7 +3,8 @@
 #define NEURALNETWORK_HPP
 
 #include <vector>
-#include "../matrix/Matrix.h"
+#include "../math/Matrix.h"
+#include "../math/Vector.h"
 
 struct NeuralNetwork
 {

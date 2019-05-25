@@ -12,8 +12,28 @@ private:
 	int cols;
 	double* elements;
 
+	void setDimentions(int rows, int cols);
+
+public:
+	Matrix();
+	Matrix(int rows, int cols);
+	Matrix(int rows, int cols, double value);
+	Matrix(std::initializer_list<std::initializer_list<double> > input);
+
+	static Matrix identity(int dimention);
+
+	~Matrix();
+
 	inline int size() const {
 		return rows * cols;
+	}
+
+	inline int getRows() const {
+		return rows;
+	}
+
+	inline int getCols() const {
+		return cols;
 	}
 
 	inline void set(int row, int col, double value) {
@@ -24,31 +44,19 @@ private:
 		return elements[row * cols + col];
 	}
 
-	void setDimensions(int rows, int cols);
-
-public:
-	Matrix();
-	Matrix(int rows, int cols);
-	Matrix(int rows, int cols, double value);
-	Matrix(std::initializer_list<std::initializer_list<double> > input);
-
-	static Matrix identity(int dimension);
-
-	~Matrix();
-
 	double trace() const;
 	Matrix transpose() const;
 	//TODO double determinant() const;
 
 	void map(double (*foo)(double));
 
-    friend Matrix operator*(const Matrix& left, const Matrix& right);
-    friend Matrix operator*(const Matrix& left, const int& right);
-    friend Matrix operator+(const Matrix& left, const Matrix& right);
-    friend Matrix operator+(const Matrix& left, const int& right);
-    friend Matrix operator-(const Matrix& left, const Matrix& right);
-    friend Matrix operator-(const Matrix& left, const int& right);
-    friend Matrix operator^(const Matrix& left, const int& right);
+	friend Matrix operator*(const Matrix& left, const Matrix& right);
+	friend Matrix operator*(const Matrix& left, const int& right);
+	friend Matrix operator+(const Matrix& left, const Matrix& right);
+	friend Matrix operator+(const Matrix& left, const int& right);
+	friend Matrix operator-(const Matrix& left, const Matrix& right);
+	friend Matrix operator-(const Matrix& left, const int& right);
+	friend Matrix operator^(const Matrix& left, const int& right);
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);
