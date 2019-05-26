@@ -19,6 +19,12 @@ Matrix::Matrix(int rows, int cols, double value): rows(rows), cols(cols)
 	std::fill(elements, elements + size(), value);
 }
 
+Matrix::Matrix(const Matrix& other)
+{
+	elements = new double[other.size()];
+	std::copy(other.elements, other.elements + size(), elements);
+}
+
 Matrix::Matrix(std::initializer_list<std::initializer_list<double> > input)
 {
 	int rows = input.size();
@@ -39,7 +45,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double> > input)
 	}
 }
 
-void Matrix::setDimentions(int rows, int cols)
+void Matrix::setDimensions(int rows, int cols)
 {
 	if(this->rows != rows || this->cols != cols)
 	{
@@ -179,7 +185,7 @@ Matrix& Matrix::operator=(const Matrix& other)
 {
 	if (this != &other)
 	{
-		setDimentions(other.rows, other.cols);
+		setDimensions(other.rows, other.cols);
 		std::copy(other.elements, other.elements + other.size(), elements);
 	}
 	return *this;

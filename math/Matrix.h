@@ -5,6 +5,8 @@
 #include <iostream>
 #include <initializer_list>
 
+struct Vector;
+
 struct Matrix
 {
 private:
@@ -12,28 +14,10 @@ private:
 	int cols;
 	double* elements;
 
-	void setDimentions(int rows, int cols);
-
-public:
-	Matrix();
-	Matrix(int rows, int cols);
-	Matrix(int rows, int cols, double value);
-	Matrix(std::initializer_list<std::initializer_list<double> > input);
-
-	static Matrix identity(int dimention);
-
-	~Matrix();
+	void setDimensions(int rows, int cols);
 
 	inline int size() const {
 		return rows * cols;
-	}
-
-	inline int getRows() const {
-		return rows;
-	}
-
-	inline int getCols() const {
-		return cols;
 	}
 
 	inline void set(int row, int col, double value) {
@@ -43,6 +27,17 @@ public:
 	inline double get(int row, int col) const {
 		return elements[row * cols + col];
 	}
+
+public:
+	Matrix();
+	Matrix(int rows, int cols);
+	Matrix(int rows, int cols, double value);
+	Matrix(const Matrix& other);
+	Matrix(std::initializer_list<std::initializer_list<double> > input);
+
+	static Matrix identity(int dimention);
+
+	~Matrix();
 
 	double trace() const;
 	Matrix transpose() const;
@@ -57,6 +52,8 @@ public:
 	friend Matrix operator-(const Matrix& left, const Matrix& right);
 	friend Matrix operator-(const Matrix& left, const int& right);
 	friend Matrix operator^(const Matrix& left, const int& right);
+
+	friend Vector operator*(const Matrix& left, const Vector& right); //Def in Vector.cpp
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);

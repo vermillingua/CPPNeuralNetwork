@@ -15,14 +15,6 @@ private:
 	
 	void setLength(int length);
 
-public:
-	Vector();
-	Vector(int length);
-	Vector(int length, double value);
-	Vector(std::initializer_list<double> input);
-
-	~Vector();
-
 	inline double get(int pos) const {
 		return elements[pos];
 	}
@@ -31,9 +23,14 @@ public:
 		elements[pos] = value;
 	}
 
-	inline int getLength() const {
-		return this->length;
-	}
+public:
+	Vector();
+	Vector(int length);
+	Vector(int length, double value);
+	Vector(const Vector& other);
+	Vector(std::initializer_list<double> input);
+
+	~Vector();
 
 	double max();
 	double min();
@@ -49,7 +46,6 @@ public:
 	friend Vector operator-(const Vector& right, const double& left);
 
 	Vector& operator=(const Vector& other);
-
 
 	friend std::ostream& operator<<(std::ostream& cout, const Vector& vector);
 	

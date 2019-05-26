@@ -18,12 +18,18 @@ Vector::Vector(int length, double value): length(length)
 	std::fill(elements, elements + length, value);
 }
 
+Vector::Vector(const Vector& other)
+{
+	this->length = other.length;
+	elements = new double[length];
+	std::copy(other.elements, other.elements + length, elements);
+}
+
 Vector::Vector(std::initializer_list<double> input)
 {
 	this->length = input.size();
 	elements = new double[length];
-	for (int i = 0; i < length; i++) 
-		elements[i] = input.begin()[i];
+	std::copy(input.begin(), input.end(), elements);
 }
 
 void Vector::setLength(int length)
@@ -86,10 +92,10 @@ Vector operator*(const Vector& left, const double& right)
 
 Vector operator*(const Matrix& left, const Vector& right)
 {
-	if(left.getCols() != right.length)
+	if(left.cols != right.length)
 		throw std::runtime_error("Invalid dimentions for Matrix and Vector multiplication!");
 	
-	Vector result(left.getRows(), 0);
+	Vector result(left.rows, 0);
 	for (int r = 0; r < result.length; r++) 
 		for (int c = 0; c < right.length; c++)
 			result.elements[r] += left.get(r, c) * right.get(c);
