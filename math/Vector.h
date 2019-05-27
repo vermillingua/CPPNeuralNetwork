@@ -10,23 +10,23 @@
 struct Vector
 {
 private:
-	int length;
+	unsigned int length;
 	double* elements;
 	
-	void setLength(int length);
+	void setLength(unsigned int length);
 
-	inline double get(int pos) const {
+	inline double get(unsigned int pos) const {
 		return elements[pos];
 	}
 
-	inline void set(int pos, double value) {
+	inline void set(unsigned int pos, double value) {
 		elements[pos] = value;
 	}
 
 public:
 	Vector();
-	Vector(int length);
-	Vector(int length, double value);
+	Vector(unsigned int length);
+	Vector(unsigned int length, double value);
 	Vector(const Vector& other);
 	Vector(std::initializer_list<double> input);
 

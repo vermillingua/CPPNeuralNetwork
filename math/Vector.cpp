@@ -7,12 +7,12 @@ Vector::Vector(): length(0)
 	elements = NULL;
 }
 
-Vector::Vector(int length): length(length)
+Vector::Vector(unsigned int length): length(length)
 {
 	elements = new double[length];
 }
 
-Vector::Vector(int length, double value): length(length)
+Vector::Vector(unsigned int length, double value): length(length)
 {
 	elements = new double[length];
 	std::fill(elements, elements + length, value);
@@ -32,7 +32,7 @@ Vector::Vector(std::initializer_list<double> input)
 	std::copy(input.begin(), input.end(), elements);
 }
 
-void Vector::setLength(int length)
+void Vector::setLength(unsigned int length)
 {
 	if(this->length != length)
 	{

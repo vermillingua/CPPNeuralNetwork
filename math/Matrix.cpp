@@ -8,12 +8,12 @@ Matrix::Matrix(): rows(0), cols(0)
 	elements = NULL;
 }
 
-Matrix::Matrix(int rows, int cols): rows(rows), cols(cols)
+Matrix::Matrix(unsigned int rows, unsigned int cols): rows(rows), cols(cols)
 {
 	elements = new double[size()];
 }
 
-Matrix::Matrix(int rows, int cols, double value): rows(rows), cols(cols)
+Matrix::Matrix(unsigned int rows, unsigned int cols, double value): rows(rows), cols(cols)
 {
 	elements = new double[size()];
 	std::fill(elements, elements + size(), value);
@@ -45,7 +45,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double> > input)
 	}
 }
 
-void Matrix::setDimensions(int rows, int cols)
+void Matrix::setDimensions(unsigned int rows, unsigned int cols)
 {
 	if(this->rows != rows || this->cols != cols)
 	{
@@ -56,7 +56,7 @@ void Matrix::setDimensions(int rows, int cols)
 	}
 }
 
-Matrix Matrix::identity(int dimentions)
+Matrix Matrix::identity(unsigned int dimentions)
 {
 	Matrix result(dimentions, dimentions, 0);
 	for (int i = 0; i < dimentions; i++) 

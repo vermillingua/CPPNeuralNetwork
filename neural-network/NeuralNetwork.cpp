@@ -1,38 +1,32 @@
 
 #include "NeuralNetwork.hpp"
 
-NeuralNetwork::NeuralNetwork(int layers, int* layer_sizes)
+NeuralNetwork::NeuralNetwork(std::vector<int> layers)
 {
-	this->layers = layers;
-	weights = new Matrix*[layers];
-	biases = new Matrix*[layers];
+	//TODO
+}
 
-	for (int i = 0; i < layers - 1; i++) //I don't think this will work
-	{
-		weights[i] = new Matrix(layer_sizes[i], layer_sizes[i - 1]);
-		biases[i] = new Matrix(layer_sizes[i], 1);
-	}
+NeuralNetwork::NeuralNetwork(std::string path)
+{
+	//TODO
 }
 
 NeuralNetwork::~NeuralNetwork()
 {
-	for (int i = 0; i < layers; i++) {
-		delete weights[i];
-		delete biases[i];
-	}
+//	for (int i = 0; i < layers; i++) {
+//		delete weights[i];
+//		delete biases[i];
+//	}
 
 	delete [] weights;
 	delete[] biases;
 }
 
-Matrix* NeuralNetwork::feedForward(Matrix* input)
+Vector NeuralNetwork::feedForward(const Vector& input)
 {
-	Matrix* result = input;
+	Vector result = input;
 	for (int i = 0; i < layers; i++) 
-	{
-		*result = *weights[i] * *result + *biases[i];
-	}
+		result = weights[i] * result + biases[i];
 	return result;
 }
-
 
