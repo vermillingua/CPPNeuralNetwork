@@ -5,14 +5,6 @@
 #include "math/Vector.h"
 #include "neural-network/NeuralNetwork.hpp"
 
-std::uniform_real_distribution<double> range(-1, 1);
-std::default_random_engine engine;
-
-double rand(double a)
-{
-	return range(engine);
-}
-
 void printSTDVec(std::vector<double> vec)
 {
 	for (auto i = vec.begin(); i != vec.end(); i++)

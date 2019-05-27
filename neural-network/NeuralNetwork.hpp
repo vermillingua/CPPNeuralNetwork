@@ -18,6 +18,8 @@ private:
 	unsigned int batchSize = 10;
 	double learningRate = 0.01;
 
+	void initialize();
+
 	Vector feedForward(const Vector& input) const;
 	static double cost(const Vector& actual, const Vector& desired);
 	void backTracking();

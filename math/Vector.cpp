@@ -90,7 +90,7 @@ std::vector<double> Vector::toSTDVector() const //TODO make more efficient
 {
 	std::vector<double> result(length);
 	for (int i = 0; i < length; i++)
-		result.push_back(get(i));
+		result[i] = get(i);
 	return result;
 }
 
