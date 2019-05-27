@@ -25,6 +25,13 @@ Vector::Vector(const Vector& other)
 	std::copy(other.elements, other.elements + length, elements);
 }
 
+Vector::Vector(std::vector<double> input)
+{
+	this->length = input.size();
+	elements = new double[length];
+	std::copy(input.begin(), input.end(), elements);
+}
+
 Vector::Vector(std::initializer_list<double> input)
 {
 	this->length = input.size();
@@ -65,10 +72,26 @@ double Vector::min()
 	return min;
 }
 
+double Vector::sum()
+{
+	double sum = 0;
+	for (int i = 0; i < length; i++) 
+		sum += get(i);
+	return sum;
+}
+
 void Vector::map(double (*foo)(double))
 {
 	for (int i = 0; i < length; i++)
 		set(i, foo(get(i)));
+}
+
+std::vector<double> Vector::toSTDVector() const //TODO make more efficient
+{
+	std::vector<double> result(length);
+	for (int i = 0; i < length; i++)
+		result.push_back(get(i));
+	return result;
 }
 
 Vector operator*(const Vector& left, const Vector& right)

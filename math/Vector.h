@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <initializer_list>
+#include <vector>
 
 #include "Matrix.h"
 
@@ -28,14 +29,18 @@ public:
 	Vector(unsigned int length);
 	Vector(unsigned int length, double value);
 	Vector(const Vector& other);
+	Vector(const std::vector<double> other);
 	Vector(std::initializer_list<double> input);
 
 	~Vector();
 
 	double max();
 	double min();
+	double sum();
 
 	void map(double (*foo)(double));
+
+	std::vector<double> toSTDVector() const;
 
 	friend Vector operator*(const Vector& right, const Vector& left);
 	friend Vector operator*(const Vector& right, const double& left);

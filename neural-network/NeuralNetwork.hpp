@@ -18,8 +18,8 @@ private:
 	unsigned int batchSize = 10;
 	double learningRate = 0.01;
 
-	Vector feedForward(const Vector& input);
-	double cost(Vector* input);
+	Vector feedForward(const Vector& input) const;
+	static double cost(const Vector& actual, const Vector& desired);
 	void backTracking();
 
 public:
@@ -36,10 +36,10 @@ public:
 	NeuralNetwork(std::string path);
 	~NeuralNetwork();
 
-	std::vector<double> classify(std::vector<double> input);
+	std::vector<double> classify(std::vector<double> input) const; //May be a problem since output vector may not be the correct size
 	void train(std::vector<std::vector<double>> trainingData, 
 		std::vector<std::vector<double>> trainingLabels);
-	void saveTo(std::string path);
+	void saveTo(std::string path) const;
 };
 
 void rawToCSV(std::string rawPath, std::string csvDir);
