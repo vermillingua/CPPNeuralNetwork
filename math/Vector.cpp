@@ -78,7 +78,7 @@ Vector operator*(const Vector& left, const Vector& right)
 	
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++)
-		result.elements[i] = left.elements[i] + right.elements[i];
+		result.set(i, left.get(i) * right.get(i));
 	return result;
 }
 
@@ -86,7 +86,7 @@ Vector operator*(const Vector& left, const double& right)
 {
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++) 
-		result.elements[i] = left.elements[i] * right;
+		result.set(i, left.get(i) * right);
 	return result;
 }
 
@@ -98,7 +98,7 @@ Vector operator*(const Matrix& left, const Vector& right)
 	Vector result(left.rows, 0);
 	for (int r = 0; r < result.length; r++) 
 		for (int c = 0; c < right.length; c++)
-			result.elements[r] += left.get(r, c) * right.get(c);
+			result.elements[r] += left.get(r, c) * right.get(c); //Change to set()
 	return result;
 }
 
@@ -109,7 +109,7 @@ Vector operator+(const Vector& left, const Vector& right)
 	
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++) 
-		result.elements[i] = left.elements[i] + right.elements[i];
+		result.set(i, left.get(i) + right.get(i));
 	return result;
 }
 
@@ -118,7 +118,7 @@ Vector operator+(const Vector& left, const double& right)
 {
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++) 
-		result.elements[i] = left.elements[i] + right;
+		result.set(i, left.get(i) + right);
 	return result;
 }
 
@@ -129,7 +129,7 @@ Vector operator-(const Vector& left, const Vector& right)
 	
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++) 
-		result.elements[i] = left.elements[i] - right.elements[i];
+		result.set(i, left.get(i) - right.get(i));
 	return result;
 }
 
@@ -138,7 +138,7 @@ Vector operator-(const Vector& left, const double& right)
 {
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++) 
-		result.elements[i] = left.elements[i] - right;
+		result.set(i, left.get(i) - right);
 	return result;
 }
 
@@ -158,8 +158,8 @@ std::ostream& operator<<(std::ostream& cout, const Vector& vector)
 	cout << "[";
 
 	for (int i = 0; i < vector.length - 1; i++) 
-		cout << vector.elements[i] << ", ";
+		cout << vector.get(i) << ", ";
 
-	cout << vector.elements[vector.length - 1] << "]\n";
+	cout << vector.get(vector.length - 1) << "]\n";
 	return cout;
 }

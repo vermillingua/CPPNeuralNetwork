@@ -39,11 +39,12 @@ public:
 
 	friend Vector operator*(const Vector& right, const Vector& left);
 	friend Vector operator*(const Vector& right, const double& left);
-	friend Vector operator*(const Matrix& right, const Vector& left);
 	friend Vector operator+(const Vector& right, const Vector& left);
 	friend Vector operator+(const Vector& right, const double& left);
 	friend Vector operator-(const Vector& right, const Vector& left);
 	friend Vector operator-(const Vector& right, const double& left);
+
+	friend Vector operator*(const Matrix& right, const Vector& left);
 
 	Vector& operator=(const Vector& other);
 
