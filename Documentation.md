@@ -35,6 +35,6 @@
 - Matrix operator*(const Matrix& left, const int& right)
 - Matrix operator+(const Matrix& left, const Matix& right)
 - Matrix operator+(const Matrix& left, const int& right)
-- - Matrix operator-(const Matrix& left, const Matix& right)
+- Matrix operator-(const Matrix& left, const Matix& right)
 - Matrix operator-(const Matrix& left, const int& right)
 - Matrix operator^(const Matrix& left, const int& right)
