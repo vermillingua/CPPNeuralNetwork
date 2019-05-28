@@ -2,6 +2,7 @@
 #include "NeuralNetwork.hpp"
 
 #include <random>
+#include <cmath>
 
 NeuralNetwork::NeuralNetwork(std::vector<int> input)
 {
@@ -49,11 +50,16 @@ void NeuralNetwork::initialize()
 	}
 }
 
+double sigmoid(double x)
+{
+	return 1 / (1 + 1 / std::exp(x));
+}
+
 Vector NeuralNetwork::feedForward(const Vector& input) const
 {
 	Vector result = input;
 	for (int i = 0; i < layers; i++) 
-		result = weights[i] * result + biases[i];
+		result = (weights[i] * result + biases[i]).map(sigmoid);
 	return result;
 }
 
