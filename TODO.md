@@ -29,4 +29,6 @@
 
 [A Different Tutorial with some Java stuff](https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html)
 
+## Backtracking resources
 
+[Some book on machine learning](http://neuralnetworksanddeeplearning.com/chap2.html)
