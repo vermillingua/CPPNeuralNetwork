@@ -52,7 +52,12 @@ void NeuralNetwork::initialize()
 
 double sigmoid(double x)
 {
-	return 1 / (1 + 1 / std::exp(x));
+	return 1 / (1 + std::exp(-x));
+}
+
+double sigmoidPrime(double x)
+{
+	return std::exp(-x) / ((1 + std::exp(-x)) * (1 + std::exp(-x)));
 }
 
 Vector NeuralNetwork::feedForward(const Vector& input) const
