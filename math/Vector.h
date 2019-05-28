@@ -38,7 +38,7 @@ public:
 	double min();
 	double sum();
 
-	void map(double (*foo)(double));
+	Vector& map(double (*foo)(double));
 
 	std::vector<double> toSTDVector() const;
 

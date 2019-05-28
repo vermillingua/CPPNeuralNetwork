@@ -88,10 +88,11 @@ Matrix Matrix::transpose() const
 	return result;
 }
 
-void Matrix::map(double (*foo)(double))
+Matrix& Matrix::map(double (*foo)(double))
 {
 	for (int i = 0; i < size(); i++)
 		elements[i] = foo(elements[i]);
+	return *this;
 }
 
 Matrix operator*(const Matrix& left, const Matrix& right)

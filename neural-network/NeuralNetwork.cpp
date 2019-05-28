@@ -59,9 +59,10 @@ Vector NeuralNetwork::feedForward(const Vector& input) const
 
 double NeuralNetwork::cost(const Vector& actual, const Vector& desired)
 {
-	Vector cost = actual - desired;
-	cost.map([](double x){return x * x;});
-	return cost.sum();
+	return (actual - desired).map([](double x){return x * x;}).sum();
+	//Vector cost = actual - desired;
+	//cost.map([](double x){return x * x;});
+	//return cost.sum();
 }
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const

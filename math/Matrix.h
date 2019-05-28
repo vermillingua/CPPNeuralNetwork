@@ -43,7 +43,7 @@ public:
 	Matrix transpose() const;
 	//TODO double determinant() const;
 
-	void map(double (*foo)(double));
+	Matrix& map(double (*foo)(double));
 
 	friend Matrix operator*(const Matrix& left, const Matrix& right);
 	friend Matrix operator*(const Matrix& left, const int& right);

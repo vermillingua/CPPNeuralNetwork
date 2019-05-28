@@ -80,10 +80,11 @@ double Vector::sum()
 	return sum;
 }
 
-void Vector::map(double (*foo)(double))
+Vector& Vector::map(double (*foo)(double))
 {
 	for (int i = 0; i < length; i++)
 		set(i, foo(get(i)));
+	return *this;
 }
 
 std::vector<double> Vector::toSTDVector() const //TODO make more efficient
