@@ -3,6 +3,7 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <fstream>
 #include <initializer_list>
 
 struct Vector;
@@ -64,6 +65,8 @@ public:
 	Matrix& operator-=(const int& other);
 
 	friend std::ostream& operator<<(std::ostream& cout, const Matrix& matrix);
+	friend std::ofstream& operator<<(std::ofstream& file, const Matrix& matrix);
+	friend std::ifstream& operator>>(std::ifstream& file, Matrix& matrix);
 };
 
 #endif /* MATRIX_H */

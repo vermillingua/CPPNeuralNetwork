@@ -3,6 +3,7 @@
 #define VECTOR_H
 
 #include <iostream>
+#include <fstream>
 #include <initializer_list>
 #include <vector>
 
@@ -13,7 +14,7 @@ struct Vector
 private:
 	unsigned int length;
 	double* elements;
-	
+
 	void setLength(unsigned int length);
 
 	inline double get(unsigned int pos) const {
@@ -54,7 +55,9 @@ public:
 	Vector& operator=(const Vector& other);
 
 	friend std::ostream& operator<<(std::ostream& cout, const Vector& vector);
-	
+	friend std::ofstream& operator<<(std::ofstream& file, const Vector& vector);
+	friend std::ifstream& operator>>(std::ifstream& file, Vector& vector);
+
 };
 
 #endif /* VECTOR_H */

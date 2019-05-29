@@ -59,7 +59,7 @@ void Matrix::setDimensions(unsigned int rows, unsigned int cols)
 Matrix Matrix::identity(unsigned int dimentions)
 {
 	Matrix result(dimentions, dimentions, 0);
-	for (int i = 0; i < dimentions; i++) 
+	for (int i = 0; i < dimentions; i++)
 		result.set(i, i, 1);
 	return result;
 }
@@ -80,9 +80,9 @@ double Matrix::trace() const
 Matrix Matrix::transpose() const
 {
 	Matrix result(cols, rows);
-	
-	for (int r = 0; r < rows; r++) 
-		for (int c = 0; c < cols; c++) 
+
+	for (int r = 0; r < rows; r++)
+		for (int c = 0; c < cols; c++)
 			result.set(c, r, get(r, c));
 
 	return result;
@@ -101,9 +101,9 @@ Matrix operator*(const Matrix& left, const Matrix& right)
 		throw std::runtime_error("Invalid dimentions for multiplication!");
 	Matrix result(left.rows, right.cols);
 
-	for (int r = 0; r < result.rows; r++) 
+	for (int r = 0; r < result.rows; r++)
 	{
-		for (int c = 0; c < result.cols; c++) 
+		for (int c = 0; c < result.cols; c++)
 		{
 			double sum = 0;
 			for (int i = 0; i < left.cols; i++)
@@ -132,9 +132,9 @@ Matrix operator+(const Matrix& left, const Matrix& right)
 
 	Matrix result(left.rows, left.cols);
 
-	for (int i = 0; i < result.size(); i++) 
+	for (int i = 0; i < result.size(); i++)
 		result.elements[i] = left.elements[i] + right.elements[i];
-	
+
 	return result;
 }
 
@@ -152,12 +152,12 @@ Matrix operator-(const Matrix& left, const Matrix& right)
 {
 	if(left.size() != right.size())
 		throw std::runtime_error("Invalid dimentions for subtraction!");
-	
+
 	Matrix result(left.rows, left.cols);
 
 	for(int i = 0; i < result.size(); i++)
 		result.elements[i] = left.elements[i] - right.elements[i];
-	
+
 	return result;
 }
 
@@ -177,7 +177,7 @@ Matrix operator^(const Matrix& left, const int& right)
 	result = left;
 
 	for (int i = 0; i < right - 1; i++)
-		result *= left;	
+		result *= left;
 
 	return result;
 }
@@ -202,7 +202,7 @@ Matrix& Matrix::operator*=(const int& other)
 {
 	for (int i = 0; i < size(); i++)
 		elements[i] *= other;
-	
+
 	return *this;
 }
 
@@ -213,15 +213,15 @@ Matrix& Matrix::operator+=(const Matrix& other)
 
 	for (int i = 0; i < size(); i++)
 		elements[i] += other.elements[i];
-	
+
 	return *this;
 }
 
 Matrix& Matrix::operator+=(const int& other)
 {
-	for (int i = 0; i < std::min(rows, cols); i++) 
+	for (int i = 0; i < std::min(rows, cols); i++)
 		set(i, i, get(i, i) + other);
-	
+
 	return *this;
 }
 
@@ -229,18 +229,18 @@ Matrix& Matrix::operator-=(const Matrix& other)
 {
 	if(size() != other.size())
 		throw std::runtime_error("Invalid dimentions for subtraction!");
-	
+
 	for (int i = 0; i < size(); i++)
 		elements[i] -= other.elements[i];
-	
+
 	return *this;
 }
 
 Matrix& Matrix::operator-=(const int& other)
 {
-	for (int i = 0; i < std::min(rows, cols); i++) 
+	for (int i = 0; i < std::min(rows, cols); i++)
 		set(i, i, get(i, i) - other);
-	
+
 	return *this;
 }
 
@@ -254,4 +254,23 @@ std::ostream& operator<<(std::ostream& cout, const Matrix& matrix)
 		cout << matrix.get(r, matrix.cols - 1) << "]\n";
 	}
 	return cout;
+}
+
+std::ofstream& operator<<(std::ofstream& file, const Matrix& matrix)
+{
+	file.write((char*)(&matrix.rows), sizeof(unsigned int));
+	file.write((char*)(&matrix.cols), sizeof(unsigned int));
+	file.write((char*)matrix.elements, sizeof(double) * matrix.size());
+	return file;
+}
+
+std::ifstream& operator>>(std::ifstream& file, Matrix& matrix)
+{
+	unsigned int r = 0;
+	unsigned int c = 0;
+	file.read((char*)(&r), sizeof(unsigned int));
+	file.read((char*)(&c), sizeof(unsigned int));
+	matrix.setDimensions(r, c);
+	file.read((char*)matrix.elements, sizeof(double) * matrix.size());
+	return file;
 }

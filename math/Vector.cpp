@@ -75,7 +75,7 @@ double Vector::min()
 double Vector::sum()
 {
 	double sum = 0;
-	for (int i = 0; i < length; i++) 
+	for (int i = 0; i < length; i++)
 		sum += get(i);
 	return sum;
 }
@@ -99,7 +99,7 @@ Vector operator*(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)
 		throw std::runtime_error("Invalid vector dimentions for multiplication!");
-	
+
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) * right.get(i));
@@ -109,7 +109,7 @@ Vector operator*(const Vector& left, const Vector& right)
 Vector operator*(const Vector& left, const double& right)
 {
 	Vector result(left.length);
-	for (int i = 0; i < result.length; i++) 
+	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) * right);
 	return result;
 }
@@ -118,9 +118,9 @@ Vector operator*(const Matrix& left, const Vector& right)
 {
 	if(left.cols != right.length)
 		throw std::runtime_error("Invalid dimentions for Matrix and Vector multiplication!");
-	
+
 	Vector result(left.rows, 0);
-	for (int r = 0; r < result.length; r++) 
+	for (int r = 0; r < result.length; r++)
 		for (int c = 0; c < right.length; c++)
 			result.elements[r] += left.get(r, c) * right.get(c); //Change to set()
 	return result;
@@ -130,9 +130,9 @@ Vector operator+(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)
 		throw std::runtime_error("Invalid vector dimentions for addition!");
-	
+
 	Vector result(left.length);
-	for (int i = 0; i < result.length; i++) 
+	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) + right.get(i));
 	return result;
 }
@@ -141,7 +141,7 @@ Vector operator+(const Vector& left, const Vector& right)
 Vector operator+(const Vector& left, const double& right)
 {
 	Vector result(left.length);
-	for (int i = 0; i < result.length; i++) 
+	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) + right);
 	return result;
 }
@@ -150,9 +150,9 @@ Vector operator-(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)
 		throw std::runtime_error("Invalid vector dimentions for subtraction!");
-	
+
 	Vector result(left.length);
-	for (int i = 0; i < result.length; i++) 
+	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) - right.get(i));
 	return result;
 }
@@ -161,7 +161,7 @@ Vector operator-(const Vector& left, const Vector& right)
 Vector operator-(const Vector& left, const double& right)
 {
 	Vector result(left.length);
-	for (int i = 0; i < result.length; i++) 
+	for (int i = 0; i < result.length; i++)
 		result.set(i, left.get(i) - right);
 	return result;
 }
@@ -181,9 +181,25 @@ std::ostream& operator<<(std::ostream& cout, const Vector& vector)
 {
 	cout << "[";
 
-	for (int i = 0; i < vector.length - 1; i++) 
+	for (int i = 0; i < vector.length - 1; i++)
 		cout << vector.get(i) << ", ";
 
 	cout << vector.get(vector.length - 1) << "]\n";
 	return cout;
+}
+
+std::ofstream& operator<<(std::ofstream& file, const Vector& vector)
+{
+	file.write((char*)(&vector.length), sizeof(unsigned int)/sizeof(char));
+	file.write((char*)vector.elements, (sizeof(double)/sizeof(char)) * vector.length);
+	return file;
+}
+
+std::ifstream& operator>>(std::ifstream& file, Vector& vector)
+{
+	int len = 0;
+	file.read((char*)(&len), sizeof(unsigned int)/sizeof(char));
+	vector.setLength(len);
+	file.read((char*)vector.elements, (sizeof(double)/sizeof(char)) * vector.length);
+	return file;
 }
