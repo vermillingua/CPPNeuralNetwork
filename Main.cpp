@@ -14,15 +14,15 @@ void printSTDVec(std::vector<double> vec)
 
 int main(int argc, char** argv)
 {
-	//std::vector<int> layers = {10, 5, 8, 2};
-	//NeuralNetwork nn(layers);
-	NeuralNetwork nn("one.nn");
-	//nn.saveTo("one.nn");
-	std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	std::vector<double> output = nn.classify(input);
+	std::vector<int> layers = {780, 32, 32, 10};
+	NeuralNetwork nn(layers);
+	//NeuralNetwork nn("one.nn");
+	nn.saveTo("one.nn");
+	//std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	//std::vector<double> output = nn.classify(input);
 
-	printSTDVec(input);
-	printSTDVec(output);
+	//printSTDVec(input);
+	//printSTDVec(output);
 	return -1;
 }
 
