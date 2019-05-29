@@ -9,3 +9,6 @@ Main
 
 # Mac system files
 *.DS_Store
+
+# Custom Neural Network saves
+*.nn

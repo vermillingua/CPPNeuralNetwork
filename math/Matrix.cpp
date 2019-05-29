@@ -58,13 +58,8 @@ void Matrix::setDimensions(unsigned int rows, unsigned int cols)
 
 Matrix Matrix::identity(unsigned int dimensions)
 {
-<<<<<<< HEAD
 	Matrix result(dimensions, dimensions, 0);
 	for (int i = 0; i < dimensions; i++)
-=======
-	Matrix result(dimensions, dimensions, 0);
-	for (int i = 0; i < dimensions; i++)
->>>>>>> 91cc873aba0fc498be9ce1fd26d124425857681a
 		result.set(i, i, 1);
 	return result;
 }
@@ -155,13 +150,8 @@ Matrix operator+(const Matrix& left, const int& right)
 
 Matrix operator-(const Matrix& left, const Matrix& right)
 {
-<<<<<<< HEAD
-	if(left.size() != right.size())
-		throw std::runtime_error("Invalid dimensions for subtraction!");
-=======
 	if(left.rows == right.rows && left.cols == right.cols)
 		throw std::runtime_error("Invalid dimensions for subtraction!");
->>>>>>> 91cc873aba0fc498be9ce1fd26d124425857681a
 
 	Matrix result(left.rows, left.cols);
 
@@ -237,13 +227,8 @@ Matrix& Matrix::operator+=(const int& other)
 
 Matrix& Matrix::operator-=(const Matrix& other)
 {
-<<<<<<< HEAD
-	if(size() != other.size())
-		throw std::runtime_error("Invalid dimensions for subtraction!");
-=======
 	if(rows == other.rows && cols == other.cols)
 		throw std::runtime_error("Invalid dimensions for subtraction!");
->>>>>>> 91cc873aba0fc498be9ce1fd26d124425857681a
 
 	for (int i = 0; i < size(); i++)
 		elements[i] -= other.elements[i];
