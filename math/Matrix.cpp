@@ -59,8 +59,8 @@ void Matrix::setDimensions(unsigned int rows, unsigned int cols)
 Matrix Matrix::identity(unsigned int dimensions)
 {
 <<<<<<< HEAD
-	Matrix result(dimentions, dimentions, 0);
-	for (int i = 0; i < dimentions; i++)
+	Matrix result(dimensions, dimensions, 0);
+	for (int i = 0; i < dimensions; i++)
 =======
 	Matrix result(dimensions, dimensions, 0);
 	for (int i = 0; i < dimensions; i++)
@@ -157,7 +157,7 @@ Matrix operator-(const Matrix& left, const Matrix& right)
 {
 <<<<<<< HEAD
 	if(left.size() != right.size())
-		throw std::runtime_error("Invalid dimentions for subtraction!");
+		throw std::runtime_error("Invalid dimensions for subtraction!");
 =======
 	if(left.rows == right.rows && left.cols == right.cols)
 		throw std::runtime_error("Invalid dimensions for subtraction!");
@@ -239,7 +239,7 @@ Matrix& Matrix::operator-=(const Matrix& other)
 {
 <<<<<<< HEAD
 	if(size() != other.size())
-		throw std::runtime_error("Invalid dimentions for subtraction!");
+		throw std::runtime_error("Invalid dimensions for subtraction!");
 =======
 	if(rows == other.rows && cols == other.cols)
 		throw std::runtime_error("Invalid dimensions for subtraction!");

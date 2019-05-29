@@ -16,6 +16,7 @@ int main(int argc, char** argv)
 {
 	std::vector<int> layers = {10, 5, 8, 2};
 	NeuralNetwork nn(layers);
+	nn.saveTo("one.nn");
 	std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	std::vector<double> output = nn.classify(input);
 

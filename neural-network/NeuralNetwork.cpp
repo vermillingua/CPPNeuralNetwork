@@ -3,6 +3,7 @@
 
 #include <random>
 #include <cmath>
+#include <fstream>
 
 NeuralNetwork::NeuralNetwork(std::vector<int> input)
 {
@@ -25,7 +26,19 @@ NeuralNetwork::NeuralNetwork(std::vector<int> input)
 
 NeuralNetwork::NeuralNetwork(std::string path)
 {
-	//TODO
+	std::ifstream file(path);
+	if(file.is_open())
+	{
+		file.read((char*)(&layers), sizeof(unsigned int));
+		weights = new Matrix[layers];
+		biases = new Vector[layers];
+		for (int i = 0; i < layers; i++) 
+		{
+			file >> weights[i];
+			file >> biases[i];
+		}
+	}
+	file.close();
 }
 
 NeuralNetwork::~NeuralNetwork()
@@ -71,9 +84,6 @@ Vector NeuralNetwork::feedForward(const Vector& input) const
 double NeuralNetwork::cost(const Vector& actual, const Vector& desired)
 {
 	return (actual - desired).map([](double x){return x * x;}).sum();
-	//Vector cost = actual - desired;
-	//cost.map([](double x){return x * x;});
-	//return cost.sum();
 }
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
@@ -81,4 +91,16 @@ std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 	Vector a = input;
 	a = feedForward(a);
 	return a.toSTDVector();
+}
+
+void NeuralNetwork::saveTo(std::string path) const
+{
+	std::ofstream file(path);
+	file.write((char*)(&layers), sizeof(unsigned int));
+	for (int i = 0; i < layers; i++) 
+	{
+		file << weights[i];
+		file << biases[i];
+	}
+	file.close();
 }
