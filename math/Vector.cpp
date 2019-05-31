@@ -82,9 +82,18 @@ double Vector::sum()
 
 Vector& Vector::map(double (*foo)(double))
 {
+	std::cout << "test 2" << std::endl;
 	for (int i = 0; i < length; i++)
 		set(i, foo(get(i)));
 	return *this;
+}
+
+Vector& Vector::copy() const
+{
+	std::cout << "test 1" << std::endl;
+	Vector result;
+	result = *this;
+	return result;
 }
 
 std::vector<double> Vector::toSTDVector() const //TODO make more efficient
@@ -173,6 +182,17 @@ Vector& Vector::operator=(const Vector& other)
 		setLength(other.length);
 		std::copy(other.elements, other.elements + length, elements);
 	}
+	return *this;
+}
+
+Vector& Vector::operator-=(const Vector& other)
+{
+	if(length != other.length)
+		throw std::runtime_error("Invalid vector dimentsion for subtraction!");
+	
+	for (int i = 0; i < length; i++) 
+		elements[i] -= other.elements[i];
+	
 	return *this;
 }
 

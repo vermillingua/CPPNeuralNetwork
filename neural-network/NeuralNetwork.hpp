@@ -21,8 +21,10 @@ private:
 	void initialize();
 
 	Vector feedForward(const Vector& input) const;
-	static double cost(const Vector& actual, const Vector& desired);
-	void backTracking();
+	void feedForward(Vector activations[], Vector weighted_inputs[]) const;
+	void generateErrors(const Vector weighted_inputs[], const Vector activations[], 
+		const Vector& target, Vector* errors) const;
+	void backPropagation(const Vector& inputs, const Vector& target);
 
 public:
 	
@@ -43,6 +45,7 @@ public:
 		std::vector<std::vector<double>> trainingLabels);
 
 	Vector classify(const Image& image);
+	void train(const Image& image);
 
 	void saveTo(std::string path) const;
 };

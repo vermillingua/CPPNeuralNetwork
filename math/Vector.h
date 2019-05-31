@@ -44,6 +44,7 @@ public:
 	double sum();
 
 	Vector& map(double (*foo)(double));
+	Vector& copy() const;
 
 	std::vector<double> toSTDVector() const;
 
@@ -55,10 +56,12 @@ public:
 	friend Vector operator-(const Vector& right, const double& left);
 
 	friend Vector operator*(const Matrix& right, const Vector& left);
+	friend Matrix operator-(const Matrix& right, const Vector& left); //def in Matrix.h
 
 	friend Vector Image::toVector() const;
 
 	Vector& operator=(const Vector& other);
+	Vector& operator-=(const Vector& other);
 
 	friend std::ostream& operator<<(std::ostream& cout, const Vector& vector);
 	friend std::ofstream& operator<<(std::ofstream& file, const Vector& vector);

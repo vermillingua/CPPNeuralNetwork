@@ -55,6 +55,7 @@ public:
 	friend Matrix operator^(const Matrix& left, const int& right);
 
 	friend Vector operator*(const Matrix& left, const Vector& right); //Def in Vector.cpp
+	friend Matrix operator-(const Matrix& left, const Vector& right);
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);

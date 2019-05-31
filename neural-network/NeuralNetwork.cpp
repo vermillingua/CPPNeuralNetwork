@@ -75,9 +75,50 @@ Vector NeuralNetwork::feedForward(const Vector& input) const
 	return result;
 }
 
-double NeuralNetwork::cost(const Vector& actual, const Vector& desired)
+void NeuralNetwork::feedForward(Vector activations[], Vector weighted_inputs[]) const
 {
-	return (actual - desired).map([](double x){return x * x;}).sum();
+	for (int i = 0; i < layers; i++) 
+	{
+		weighted_inputs[i] = weights[i] * activations[i] + biases[i];
+		activations[i + 1] = weighted_inputs[i].copy().map(sigmoid);
+	}
+}
+
+void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector activations[], 
+	const Vector& target, Vector* errors) const
+{
+	errors[layers - 1] = (activations[layers] - target) * 
+		weighted_inputs[layers - 1].copy().map(sigmoidPrime);
+
+	for (int i = layers - 2; i > -1; i--) 
+	{
+		errors[i] = (weights[i + 1].transpose() * errors[i + 1]) * 
+			weighted_inputs[i].copy().map(sigmoidPrime);
+	}
+}
+
+void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
+{
+	Vector weighted_inputs[layers]; // z
+	Vector activations[layers + 1];
+	activations[0] = input;
+
+	std::cout << "Test 1" << std::endl;
+	std::cout << activations[1] << std::endl;
+	std::cout << "Test 2" << std::endl;
+	feedForward(activations, weighted_inputs);
+
+	Vector errors[layers]; // delta
+	generateErrors(weighted_inputs, activations, target, errors);
+
+
+	for (int i = 0; i < layers; i++) 
+	{
+		biases[i] -= errors[i] * learningRate;
+		weights[i] = weights[i] - (activations[i] * errors[i] * learningRate);
+	}
+
+	
 }
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
@@ -91,6 +132,17 @@ Vector NeuralNetwork::classify(const Image& image)
 {
 	Vector a = image.toVector();
 	return feedForward(a);
+}
+
+void NeuralNetwork::train(const Image& image)
+{
+	Vector input = image.toVector();
+	std::vector<double> a(10, 0);
+	a[image.getLabel()] = 1;
+	Vector output = a;
+	std::cout << image << std::endl;
+	std::cout << output << std::endl;
+	backPropagation(input, output);
 }
 
 void NeuralNetwork::saveTo(std::string path) const

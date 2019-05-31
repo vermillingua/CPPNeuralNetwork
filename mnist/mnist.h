@@ -11,7 +11,7 @@ struct Vector;
 struct Image
 {
 private:
-	unsigned int label = 0;
+	unsigned int label;
 	unsigned int rows;
 	unsigned int cols;
 	unsigned char* pixels;
@@ -31,7 +31,11 @@ public:
 	Image();
 	~Image();
 
-	static void loadFile(std::ifstream& file, std::vector<Image>& images);
+	unsigned int getLabel() const {
+		return label;
+	}
+
+	static void loadFiles(std::ifstream& imageFile, std::ifstream& labelFile, std::vector<Image>& images);
 
 	Image& center();
 

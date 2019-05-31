@@ -3,6 +3,8 @@
 
 #include <cstddef>
 
+#include "Vector.h"
+
 Matrix::Matrix(): rows(0), cols(0)
 {
 	elements = NULL;
@@ -179,6 +181,19 @@ Matrix operator^(const Matrix& left, const int& right)
 	for (int i = 0; i < right - 1; i++)
 		result *= left;
 
+	return result;
+}
+
+Matrix operator-(const Matrix& left, const Vector& right)
+{
+	if(left.rows != right.length)
+		throw std::runtime_error("Invalid dimensions for matrix and vector subtration!");
+	
+	Matrix result;
+	result = left;
+	for (int c = 0; c < result.cols; c++) 
+		for (int r = 0; r < result.rows; r++) 
+			result.set(r, c, left.get(r, c) - right.get(r));
 	return result;
 }
 
