@@ -4,6 +4,7 @@
 #include "math/Matrix.h"
 #include "math/Vector.h"
 #include "neural-network/NeuralNetwork.hpp"
+#include "mnist/mnist.h"
 
 void printSTDVec(std::vector<double> vec)
 {
@@ -14,15 +15,20 @@ void printSTDVec(std::vector<double> vec)
 
 int main(int argc, char** argv)
 {
-	std::vector<int> layers = {780, 32, 32, 10};
-	NeuralNetwork nn(layers);
-	//NeuralNetwork nn("one.nn");
-	nn.saveTo("one.nn");
-	//std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	//std::vector<double> output = nn.classify(input);
+	std::ifstream file("t10k-images-idx3-ubyte");
+	std::vector<Image> images;
 
-	//printSTDVec(input);
-	//printSTDVec(output);
+	Image::loadFile(file, images);
+
+	std::cout << images.size() << std::endl;
+
+
+	for (int i = 0; i < 10; i++) 
+	{
+		std::cout << images[i] << std::endl;
+	}
+
+
 	return -1;
 }
 

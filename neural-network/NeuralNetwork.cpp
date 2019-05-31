@@ -16,12 +16,6 @@ NeuralNetwork::NeuralNetwork(std::vector<int> input)
 		biases[i] = Vector(input[i + 1], 0);
 	}
 	initialize();
-
-	for (int i = 0; i < this->layers; i++) {
-		std::cout << "Layer: " << i << std::endl;
-		std::cout << weights[i] << std::endl;
-		std::cout << biases[i] << std::endl;
-	}
 }
 
 NeuralNetwork::NeuralNetwork(std::string path)
