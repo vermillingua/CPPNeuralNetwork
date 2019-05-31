@@ -9,6 +9,10 @@
 
 #include "Matrix.h"
 
+#include "../mnist/mnist.h"
+
+//struct Image;
+
 struct Vector
 {
 private:
@@ -51,6 +55,8 @@ public:
 	friend Vector operator-(const Vector& right, const double& left);
 
 	friend Vector operator*(const Matrix& right, const Vector& left);
+
+	friend Vector Image::toVector() const;
 
 	Vector& operator=(const Vector& other);
 

@@ -20,14 +20,13 @@ int main(int argc, char** argv)
 
 	Image::loadFile(file, images);
 
-	std::cout << images.size() << std::endl;
+	std::vector<int> layers = {784, 32, 32, 10};
+	NeuralNetwork nn(layers);
 
-
-	for (int i = 0; i < 10; i++) 
-	{
-		std::cout << images[i] << std::endl;
-	}
-
+	std::cout << nn.classify(images[0]) << std::endl;
+	std::cout << nn.classify(images[1]) << std::endl;
+	std::cout << nn.classify(images[2]) << std::endl;
+	std::cout << nn.classify(images[3]) << std::endl;
 
 	return -1;
 }

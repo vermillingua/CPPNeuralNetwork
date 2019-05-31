@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include "../math/Vector.h"
+
 Image::Image(): label(0), rows(0), cols(0)
 {
 	pixels = NULL;
@@ -68,6 +70,16 @@ Image& Image::center()
 {
 	//TODO Use center of mass to center custom images. MNIST ones are already centered.
 	return *this;
+}
+
+Vector Image::toVector() const
+{
+	Vector result(size());
+	
+	for (int i = 0; i < size(); i++) 
+		result.set(i, pixels[i]);
+	
+	return result;
 }
 
 std::ostream& operator<<(std::ostream& cout, const Image& image)

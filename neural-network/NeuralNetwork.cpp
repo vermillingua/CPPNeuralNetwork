@@ -87,6 +87,12 @@ std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 	return a.toSTDVector();
 }
 
+Vector NeuralNetwork::classify(const Image& image)
+{
+	Vector a = image.toVector();
+	return feedForward(a);
+}
+
 void NeuralNetwork::saveTo(std::string path) const
 {
 	std::ofstream file(path);

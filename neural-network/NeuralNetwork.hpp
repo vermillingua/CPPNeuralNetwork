@@ -41,6 +41,9 @@ public:
 	std::vector<double> classify(std::vector<double> input) const; //May be a problem since output vector may not be the correct size
 	void train(std::vector<std::vector<double>> trainingData, 
 		std::vector<std::vector<double>> trainingLabels);
+
+	Vector classify(const Image& image);
+
 	void saveTo(std::string path) const;
 };
 

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+struct Vector;
+
 struct Image
 {
 private:
@@ -32,6 +34,8 @@ public:
 	static void loadFile(std::ifstream& file, std::vector<Image>& images);
 
 	Image& center();
+
+	Vector toVector() const;
 
 	friend std::ostream& operator<<(std::ostream& cout, const Image& image);
 	friend std::ifstream& operator>>(std::ifstream& file, Image& image);
