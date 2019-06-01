@@ -64,7 +64,7 @@ double sigmoid(double x)
 
 double sigmoidPrime(double x)
 {
-	return std::exp(-x) / ((1 + std::exp(-x)) * (1 + std::exp(-x)));
+	return sigmoid(x) * (1 - sigmoid(x));
 }
 
 Vector NeuralNetwork::feedForward(const Vector& input) const
@@ -89,15 +89,12 @@ void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector 
 	const Vector& target, Vector* errors) const
 {
 	Vector t = weighted_inputs[layers - 1];
-	errors[layers - 1] = (activations[layers] - target) * 
-		t.map(sigmoidPrime);
+	errors[layers - 1] = (activations[layers] - target) * t.map(sigmoidPrime);
 
 	for (int i = layers - 2; i > -1; i--) 
 	{
 		Vector temp = weighted_inputs[i];
-
-		errors[i] = (weights[i + 1].transpose() * errors[i + 1]) * 
-			temp.map(sigmoidPrime);
+		errors[i] = (weights[i + 1].transpose() * errors[i + 1]) * temp.map(sigmoidPrime);
 	}
 }
 
@@ -120,15 +117,11 @@ void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
 
 	generateErrors(weighted_inputs, activations, target, errors);
 
-
-
 	for (int i = 0; i < layers; i++) 
 	{
 		biases[i] -= errors[i] * learningRate;
-		weights[i] = weights[i] - (activations[i] * errors[i] * learningRate);
+		weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
 	}
-
-	
 }
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
@@ -150,8 +143,6 @@ void NeuralNetwork::train(const Image& image)
 	std::vector<double> a(10, 0);
 	a[image.getLabel()] = 1;
 	Vector output = a;
-	std::cout << image << std::endl;
-	std::cout << output << std::endl;
 	backPropagation(input, output);
 }
 

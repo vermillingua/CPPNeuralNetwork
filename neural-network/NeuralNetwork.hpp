@@ -17,7 +17,7 @@ private:
 	unsigned int layers;
 
 	unsigned int batchSize = 10;
-	double learningRate = 0.01;
+	double learningRate = .3;
 
 	void initialize();
 
@@ -41,7 +41,7 @@ public:
 	NeuralNetwork(std::string path);
 	~NeuralNetwork();
 
-	std::vector<double> classify(std::vector<double> input) const; //May be a problem since output vector may not be the correct size
+	std::vector<double> classify(std::vector<double> input) const;
 	void train(std::vector<std::vector<double>> trainingData, 
 		std::vector<std::vector<double>> trainingLabels);
 

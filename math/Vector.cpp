@@ -102,8 +102,7 @@ Vector operator*(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)
 	{
-		std::cout << left.length << std::endl;
-		std::cout << right.length << std::endl;
+		std::cout << "Cannot multiply: ll = " << left.length << ", rl = " << right.length << std::endl;
 		throw std::runtime_error("Invalid vector dimentions for multiplication!");
 	}
 

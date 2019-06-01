@@ -6,7 +6,8 @@
 
 #include "math/Vector.h"
 
-void printSTDVec(std::vector<double> vec)
+template<typename T>
+void printSTDVec(std::vector<T> vec)
 {
 	for (auto i = vec.begin(); i != vec.end(); i++)
 		std::cout << *i << " ";
@@ -15,21 +16,35 @@ void printSTDVec(std::vector<double> vec)
 
 int main(int argc, char** argv)
 {
-	std::ifstream imageFile("t10k-images-idx3-ubyte");
-	std::ifstream labelFile("t10k-labels-idx1-ubyte");
+	std::ifstream imageFile("mnist-data/train-images-idx3-ubyte");
+	std::ifstream labelFile("mnist-data/train-labels-idx1-ubyte");
 	std::vector<Image> images;
 
 	Image::loadFiles(imageFile, labelFile, images);
 
-	std::vector<int> layers = {784, 32, 32, 10};
-	NeuralNetwork nn(layers);
+	//std::vector<int> layers = {784, 32, 32, 10};
+	//NeuralNetwork nn(layers);
+	NeuralNetwork nn("01.nn");
 
-	for (int i = 0; i < 10; i++) 
+	int num = 2;
+	for (int i = 0; i < num; i++) 
 	{
-		std::cout << nn.classify(images[i]) << std::endl;
-		nn.train(images[i]);
+		std::cout << images[i] << std::endl;
 		std::cout << nn.classify(images[i]) << std::endl;
 	}
+
+	for (int i = 0; i < 60000; i++) 
+	{
+		nn.train(images[i]);
+	}
+
+	for (int i = 0; i < num; i++) 
+	{
+		std::cout << "i = " << i << " " <<  nn.classify(images[i]) << std::endl;
+	}
+
+	nn.saveTo("01.nn");
+
 
 	return -1;
 }
