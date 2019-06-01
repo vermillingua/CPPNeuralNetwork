@@ -85,18 +85,9 @@ double Vector::sum()
 
 Vector& Vector::map(double (*foo)(double))
 {
-	std::cout << "test 2" << std::endl;
 	for (int i = 0; i < length; i++)
 		set(i, foo(get(i)));
 	return *this;
-}
-
-Vector& Vector::copy() const
-{
-	std::cout << "test 1" << std::endl;
-	Vector result;
-	result = *this;
-	return result;
 }
 
 std::vector<double> Vector::toSTDVector() const //TODO make more efficient
@@ -110,7 +101,11 @@ std::vector<double> Vector::toSTDVector() const //TODO make more efficient
 Vector operator*(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)
+	{
+		std::cout << left.length << std::endl;
+		std::cout << right.length << std::endl;
 		throw std::runtime_error("Invalid vector dimentions for multiplication!");
+	}
 
 	Vector result(left.length);
 	for (int i = 0; i < result.length; i++)

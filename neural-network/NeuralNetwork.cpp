@@ -80,36 +80,46 @@ void NeuralNetwork::feedForward(Vector activations[], Vector weighted_inputs[]) 
 	for (int i = 0; i < layers; i++) 
 	{
 		weighted_inputs[i] = weights[i] * activations[i] + biases[i];
-		activations[i + 1] = weighted_inputs[i].copy().map(sigmoid);
+		activations[i + 1] = weighted_inputs[i];
+		activations[i + 1].map(sigmoid);
 	}
 }
 
 void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector activations[], 
 	const Vector& target, Vector* errors) const
 {
+	Vector t = weighted_inputs[layers - 1];
 	errors[layers - 1] = (activations[layers] - target) * 
-		weighted_inputs[layers - 1].copy().map(sigmoidPrime);
+		t.map(sigmoidPrime);
 
 	for (int i = layers - 2; i > -1; i--) 
 	{
+		Vector temp = weighted_inputs[i];
+
 		errors[i] = (weights[i + 1].transpose() * errors[i + 1]) * 
-			weighted_inputs[i].copy().map(sigmoidPrime);
+			temp.map(sigmoidPrime);
 	}
 }
 
 void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
 {
 	Vector weighted_inputs[layers]; // z
+	for (int i = 0; i < layers; i++) 
+		weighted_inputs[i] = Vector(1, 0);
+
 	Vector activations[layers + 1];
+	for (int i = 0; i < layers + 1; i++) 
+		activations[i] = Vector(1, 0);
 	activations[0] = input;
 
-	std::cout << "Test 1" << std::endl;
-	std::cout << activations[1] << std::endl;
-	std::cout << "Test 2" << std::endl;
 	feedForward(activations, weighted_inputs);
 
 	Vector errors[layers]; // delta
+	for (int i = 0; i < layers; i++) 
+		errors[i] = Vector(1, 0);
+
 	generateErrors(weighted_inputs, activations, target, errors);
+
 
 
 	for (int i = 0; i < layers; i++) 
@@ -130,13 +140,13 @@ std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 
 Vector NeuralNetwork::classify(const Image& image)
 {
-	Vector a = image.toVector();
+	Vector a(image.toVector());
 	return feedForward(a);
 }
 
 void NeuralNetwork::train(const Image& image)
 {
-	Vector input = image.toVector();
+	Vector input(image.toVector());
 	std::vector<double> a(10, 0);
 	a[image.getLabel()] = 1;
 	Vector output = a;

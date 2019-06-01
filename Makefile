@@ -9,9 +9,9 @@ Main.o: Main.cpp neural-network/NeuralNetwork.hpp math/Matrix.h math/Vector.h mn
 
 mnist/mnist.o: mnist/mnist.h
 
-neural-network/NeuralNetwork.o: neural-network/NeuralNetwork.hpp
+neural-network/NeuralNetwork.o: neural-network/NeuralNetwork.hpp math/Matrix.h math/Vector.h mnist/mnist.h
 
-math/Matrix.o: math/Matrix.h
+math/Matrix.o: math/Matrix.h math/Vector.h
 
 math/Vector.o: math/Vector.h math/Matrix.h
 

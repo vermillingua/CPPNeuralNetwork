@@ -2,8 +2,7 @@
 #include "mnist.h"
 
 #include <cstdint>
-
-#include "../math/Vector.h"
+#include <vector>
 
 Image::Image(): label(0), rows(0), cols(0)
 {
@@ -90,14 +89,16 @@ Image& Image::center()
 	return *this;
 }
 
-Vector Image::toVector() const
+std::vector<double> Image::toVector() const
 {
-	Vector result(size());
-	
+	std::vector<double> vec(size(), 0);
+
 	for (int i = 0; i < size(); i++) 
-		result.set(i, pixels[i]);
-	
-	return result;
+	{
+		vec[i] = pixels[i];
+	}
+
+	return vec;
 }
 
 std::ostream& operator<<(std::ostream& cout, const Image& image)

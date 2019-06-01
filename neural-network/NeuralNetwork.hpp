@@ -7,6 +7,7 @@
 
 #include "../math/Matrix.h"
 #include "../math/Vector.h"
+#include "../mnist/mnist.h"
 
 struct NeuralNetwork
 {

@@ -1,10 +1,10 @@
 #include <iostream>
 #include <random>
 
-#include "math/Matrix.h"
-#include "math/Vector.h"
 #include "neural-network/NeuralNetwork.hpp"
-#include "mnist/mnist.h"
+//#include "mnist/mnist.h"
+
+#include "math/Vector.h"
 
 void printSTDVec(std::vector<double> vec)
 {
