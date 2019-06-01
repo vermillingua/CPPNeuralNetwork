@@ -1,6 +1,9 @@
 
 #include "Vector.h"
+
 #include <limits>
+
+#include "Matrix.h"
 
 Vector::Vector(): length(0)
 {

@@ -7,11 +7,11 @@
 #include <initializer_list>
 #include <vector>
 
-#include "Matrix.h"
-
 #include "../mnist/mnist.h"
 
 //struct Image;
+
+struct Matrix;
 
 struct Vector
 {
