@@ -98,6 +98,16 @@ void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector 
 	}
 }
 
+void NeuralNetwork::updateWeightsAndBiases(const Vector& errors[], const Vector& activations[], 
+	double learningRate)
+{
+	for (int i = 0; i < layers; i++) 
+	{
+		biases[i] -= errors[i] * learningRate;
+		weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
+	}
+}
+
 void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
 {
 	Vector weighted_inputs[layers]; // z
@@ -126,24 +136,46 @@ void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 {
-	Vector a = input;
-	a = feedForward(a);
-	return a.toSTDVector();
+	return feedForward(Vector(input)).toSTDVector();
 }
 
-Vector NeuralNetwork::classify(const Image& image)
+void NeuralNetwork::train(std::vector<std::vector<double>> input, 
+	std::vector<std::vector<double>> output, int epochs, int batchSize, double learningRate)
 {
-	Vector a(image.toVector());
-	return feedForward(a);
-}
+	std::vector<Vector> v_Input(input.size());
+	for (int i = 0; i < v_Input.size(); i++) 
+		v_Input[i] = Vector(input[i]);
+	
+	std::vector<Vector> v_Output(output.size());
+	for (int i = 0; i < v_Output.size(); i++) 
+		v_Output[i] = Vector(output[i]);
 
-void NeuralNetwork::train(const Image& image)
-{
-	Vector input(image.toVector());
-	std::vector<double> a(10, 0);
-	a[image.getLabel()] = 1;
-	Vector output = a;
-	backPropagation(input, output);
+	Vector weighted_inputs[layers]; // z
+	Vector activations[layers + 1]; // a
+	Vector errors[layers]; // delta
+	
+	int batchCounter = 0;
+
+	for (int i = 0; i < epochs; i++) 
+	{
+		if(batchCounter % bathSize == 0 && batchCounter != 0)
+		{
+			generateErrors(weighted_inputs, activations, target, errors);
+			updateWeightsAndBiases(errors, activations, learningRate);
+		}
+		
+		Vector weighted_inputs_t[layers];
+		Vector activations_t[layers + 1];
+		feedForward(activations_t, weighted_inputs_t);
+
+		for (int j = 0; j < layers; j++) 
+			weighted_inputs[j] += weighted_inputs_t[j];
+		
+		for (int j = 0; j < layers + 1; j++) 
+			activations[j] += activations_t[j];
+	}
+
+	//Update with remaining data
 }
 
 void NeuralNetwork::saveTo(std::string path) const

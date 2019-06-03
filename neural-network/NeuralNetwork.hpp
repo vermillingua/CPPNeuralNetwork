@@ -17,7 +17,7 @@ private:
 	unsigned int layers;
 
 	unsigned int batchSize = 10;
-	double learningRate = .3;
+	double learningRate = .01;
 
 	void initialize();
 

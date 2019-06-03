@@ -152,6 +152,14 @@ Vector operator+(const Vector& left, const double& right)
 	return result;
 }
 
+Vector operator/(const Vector& left, const double& right)
+{
+	Vector result(left.length);
+	for (int i = 0; i < result.length; i++)
+		result.set(i, left.get(i) / right);
+	return result;
+}
+
 Vector operator-(const Vector& left, const Vector& right)
 {
 	if(left.length != right.length)

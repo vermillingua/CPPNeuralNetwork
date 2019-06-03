@@ -33,9 +33,15 @@ int main(int argc, char** argv)
 		std::cout << nn.classify(images[i]) << std::endl;
 	}
 
-	for (int i = 0; i < 60000; i++) 
+	for (int i = 0; i < 1; i++) 
 	{
-		nn.train(images[i]);
+		for (int i = 0; i < 30000; i++) 
+		{
+			nn.train(images[i]);
+		}
+		std::cout << "." << std::endl;
+
+		nn.saveTo("01.nn");
 	}
 
 	for (int i = 0; i < num; i++) 
