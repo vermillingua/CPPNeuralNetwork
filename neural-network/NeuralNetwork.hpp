@@ -22,9 +22,11 @@ private:
 	void initialize();
 
 	Vector feedForward(const Vector& input) const;
-	void feedForward(Vector activations[], Vector weighted_inputs[]) const;
+	void feedForward(Vector weighted_inputs[], Vector activations[]) const;
 	void generateErrors(const Vector weighted_inputs[], const Vector activations[], 
-		const Vector& target, Vector* errors) const;
+		const Vector& target, Vector errors[]) const;
+	void updateWeightsAndBiases(const Vector errors[], const Vector activations[], 
+		double learningRate);
 	void backPropagation(const Vector& inputs, const Vector& target);
 
 public:
@@ -42,11 +44,12 @@ public:
 	~NeuralNetwork();
 
 	std::vector<double> classify(std::vector<double> input) const;
+
 	void train(std::vector<std::vector<double>> trainingData, 
 		std::vector<std::vector<double>> trainingLabels);
 
-	Vector classify(const Image& image);
-	void train(const Image& image);
+	void train(std::vector<std::vector<double>> input, std::vector<std::vector<double>> output,
+		int epochs, double learningRate);
 
 	void saveTo(std::string path) const;
 };

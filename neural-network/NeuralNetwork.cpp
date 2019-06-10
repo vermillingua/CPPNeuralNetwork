@@ -75,7 +75,7 @@ Vector NeuralNetwork::feedForward(const Vector& input) const
 	return result;
 }
 
-void NeuralNetwork::feedForward(Vector activations[], Vector weighted_inputs[]) const
+void NeuralNetwork::feedForward(Vector weighted_inputs[], Vector activations[]) const
 {
 	for (int i = 0; i < layers; i++) 
 	{
@@ -86,7 +86,7 @@ void NeuralNetwork::feedForward(Vector activations[], Vector weighted_inputs[]) 
 }
 
 void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector activations[], 
-	const Vector& target, Vector* errors) const
+	const Vector& target, Vector errors[]) const
 {
 	Vector t = weighted_inputs[layers - 1];
 	errors[layers - 1] = (activations[layers] - target) * t.map(sigmoidPrime);
@@ -98,7 +98,7 @@ void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector 
 	}
 }
 
-void NeuralNetwork::updateWeightsAndBiases(const Vector& errors[], const Vector& activations[], 
+void NeuralNetwork::updateWeightsAndBiases(const Vector errors[], const Vector activations[], 
 	double learningRate)
 {
 	for (int i = 0; i < layers; i++) 
@@ -140,7 +140,7 @@ std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 }
 
 void NeuralNetwork::train(std::vector<std::vector<double>> input, 
-	std::vector<std::vector<double>> output, int epochs, int batchSize, double learningRate)
+	std::vector<std::vector<double>> output, int epochs, double learningRate)
 {
 	std::vector<Vector> v_Input(input.size());
 	for (int i = 0; i < v_Input.size(); i++) 
@@ -149,33 +149,22 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	std::vector<Vector> v_Output(output.size());
 	for (int i = 0; i < v_Output.size(); i++) 
 		v_Output[i] = Vector(output[i]);
+	
+	Vector target;
 
 	Vector weighted_inputs[layers]; // z
 	Vector activations[layers + 1]; // a
 	Vector errors[layers]; // delta
 	
-	int batchCounter = 0;
-
 	for (int i = 0; i < epochs; i++) 
 	{
-		if(batchCounter % bathSize == 0 && batchCounter != 0)
-		{
-			generateErrors(weighted_inputs, activations, target, errors);
-			updateWeightsAndBiases(errors, activations, learningRate);
-		}
+		activations[0] = v_Input[i];
+		target = v_Output[i];
 		
-		Vector weighted_inputs_t[layers];
-		Vector activations_t[layers + 1];
-		feedForward(activations_t, weighted_inputs_t);
-
-		for (int j = 0; j < layers; j++) 
-			weighted_inputs[j] += weighted_inputs_t[j];
-		
-		for (int j = 0; j < layers + 1; j++) 
-			activations[j] += activations_t[j];
+		feedForward(weighted_inputs, activations);
+		generateErrors(weighted_inputs, activations, target, errors);
+		updateWeightsAndBiases(errors, activations, learningRate);
 	}
-
-	//Update with remaining data
 }
 
 void NeuralNetwork::saveTo(std::string path) const
