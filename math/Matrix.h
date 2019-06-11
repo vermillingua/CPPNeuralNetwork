@@ -47,11 +47,11 @@ public:
 	Matrix& map(double (*foo)(double));
 
 	friend Matrix operator*(const Matrix& left, const Matrix& right);
-	friend Matrix operator*(const Matrix& left, const int& right);
+	friend Matrix operator*(const Matrix& left, const double& right);
 	friend Matrix operator+(const Matrix& left, const Matrix& right);
-	friend Matrix operator+(const Matrix& left, const int& right);
+	friend Matrix operator+(const Matrix& left, const double& right);
 	friend Matrix operator-(const Matrix& left, const Matrix& right);
-	friend Matrix operator-(const Matrix& left, const int& right);
+	friend Matrix operator-(const Matrix& left, const double& right);
 	friend Matrix operator^(const Matrix& left, const int& right);
 
 	friend Vector operator*(const Matrix& left, const Vector& right); //Def in Vector.cpp
@@ -59,11 +59,11 @@ public:
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);
-	Matrix& operator*=(const int& other);
+	Matrix& operator*=(const double& other);
 	Matrix& operator+=(const Matrix& other);
-	Matrix& operator+=(const int& other);
+	Matrix& operator+=(const double& other);
 	Matrix& operator-=(const Matrix& other);
-	Matrix& operator-=(const int& other);
+	Matrix& operator-=(const double& other);
 
 	friend std::ostream& operator<<(std::ostream& cout, const Matrix& matrix);
 	friend std::ofstream& operator<<(std::ofstream& file, const Matrix& matrix);

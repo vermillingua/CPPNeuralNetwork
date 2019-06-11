@@ -41,9 +41,9 @@ int main(int argc, char** argv)
 		printSTDVec(output[i]);
 	}
 
-	//std::vector<int> layers = {784, 64, 32, 32, 10};
-	//NeuralNetwork nn(layers);
-	NeuralNetwork nn("02.nn");
+	std::vector<int> layers = {784, 32, 32, 10};
+	NeuralNetwork nn(layers);
+	//NeuralNetwork nn("02.nn");
 
 	int num = 2;
 	for (int i = 0; i < num; i++) 
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 		printSTDVec(nn.classify(images[i].toVector()));
 	}
 
-	nn.train(input, output, 10, .1);
+	nn.train(input, output, 1, .1);
 
 
 	for (int i = 0; i < num; i++) 

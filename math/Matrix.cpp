@@ -117,7 +117,7 @@ Matrix operator*(const Matrix& left, const Matrix& right)
 	return result;
 }
 
-Matrix operator*(const Matrix& left, const int& right)
+Matrix operator*(const Matrix& left, const double& right)
 {
 	Matrix result(left.rows, left.cols);
 
@@ -140,7 +140,7 @@ Matrix operator+(const Matrix& left, const Matrix& right)
 	return result;
 }
 
-Matrix operator+(const Matrix& left, const int& right)
+Matrix operator+(const Matrix& left, const double& right)
 {
 	Matrix result = left;
 
@@ -163,7 +163,7 @@ Matrix operator-(const Matrix& left, const Matrix& right)
 	return result;
 }
 
-Matrix operator-(const Matrix& left, const int& right)
+Matrix operator-(const Matrix& left, const double& right)
 {
 	Matrix result = left;
 
@@ -173,7 +173,7 @@ Matrix operator-(const Matrix& left, const int& right)
 	return result;
 }
 
-Matrix operator^(const Matrix& left, const int& right)
+Matrix operator^(const Matrix& left, const double& right)
 {
 	Matrix result;
 	result = left;
@@ -213,7 +213,7 @@ Matrix& Matrix::operator*=(const Matrix& other)
 	return *this;
 }
 
-Matrix& Matrix::operator*=(const int& other)
+Matrix& Matrix::operator*=(const double& other)
 {
 	for (int i = 0; i < size(); i++)
 		elements[i] *= other;
@@ -232,7 +232,7 @@ Matrix& Matrix::operator+=(const Matrix& other)
 	return *this;
 }
 
-Matrix& Matrix::operator+=(const int& other)
+Matrix& Matrix::operator+=(const double& other)
 {
 	for (int i = 0; i < std::min(rows, cols); i++)
 		set(i, i, get(i, i) + other);
@@ -251,7 +251,7 @@ Matrix& Matrix::operator-=(const Matrix& other)
 	return *this;
 }
 
-Matrix& Matrix::operator-=(const int& other)
+Matrix& Matrix::operator-=(const double& other)
 {
 	for (int i = 0; i < std::min(rows, cols); i++)
 		set(i, i, get(i, i) - other);

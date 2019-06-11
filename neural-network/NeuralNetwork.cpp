@@ -158,12 +158,15 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	
 	for (int i = 0; i < epochs; i++) 
 	{
-		activations[0] = v_Input[i];
-		target = v_Output[i];
-		
-		feedForward(weighted_inputs, activations);
-		generateErrors(weighted_inputs, activations, target, errors);
-		updateWeightsAndBiases(errors, activations, learningRate);
+		for (int j = 0; j < input.size(); j++) 
+		{
+			activations[0] = v_Input[j];
+			target = v_Output[j];
+			
+			feedForward(weighted_inputs, activations);
+			generateErrors(weighted_inputs, activations, target, errors);
+			updateWeightsAndBiases(errors, activations, learningRate);
+		}
 	}
 }
 
