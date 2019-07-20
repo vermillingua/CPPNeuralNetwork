@@ -14,32 +14,31 @@ void printSTDVec(std::vector<T> vec)
 	std::cout << std::endl;
 }
 
-int main(int argc, char** argv)
+void load_files(std::vector<std::vector<double>>& input, std::vector<std::vector<double>>& output,
+	std::vector<Image>& images, std::string image_file_path, std::string label_file_path)
 {
-	std::ifstream imageFile("mnist-data/train-images-idx3-ubyte");
-	std::ifstream labelFile("mnist-data/train-labels-idx1-ubyte");
-	std::vector<Image> images;
+	std::ifstream image_file(image_file_path);
+	std::ifstream label_file(label_file_path);
 
-	Image::loadFiles(imageFile, labelFile, images);
+	Image::loadFiles(image_file, label_file, images);
 
-	std::vector<std::vector<double>> input(images.size());
-	std::vector<std::vector<double>> output(images.size());
+	input.resize(images.size());
+	output.resize(images.size());
 
-	for (int i = 0; i < images.size(); i++) 
-		input[i] = images[i].toVector();
-	
 	for (int i = 0; i < images.size(); i++) 
 	{
-		output[i] = std::vector(10, 0.0);
+		input[i] = images[i].toVector();
+		output[i] = std::vector<double>(10, 0.0);
 		output[i][images[i].getLabel()] = 1;
 	}
+}
 
-	for (int i = 0; i < 10; i++) 
-	{
-		std::cout << images[i] << std::endl;
-		std::cout << images[i].getLabel() << std::endl;
-		printSTDVec(output[i]);
-	}
+int main(int argc, char** argv)
+{
+	std::vector<std::vector<double>> input, output;
+	std::vector<Image> images;
+	load_files(input, output, images, 
+		"mnist-data/train-images-idx3-ubyte", "mnist-data/train-labels-idx1-ubyte");
 
 	std::vector<int> layers = {784, 32, 32, 10};
 	NeuralNetwork nn(layers);
@@ -52,7 +51,7 @@ int main(int argc, char** argv)
 		printSTDVec(nn.classify(images[i].toVector()));
 	}
 
-	nn.train(input, output, 1, .1);
+	nn.train(input, output, 1, .0001);
 
 
 	for (int i = 0; i < num; i++) 
@@ -63,7 +62,6 @@ int main(int argc, char** argv)
 	std::cout << images.size() << std::endl;
 
 	nn.saveTo("02.nn");
-
 
 	return -1;
 }

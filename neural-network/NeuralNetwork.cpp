@@ -4,6 +4,7 @@
 #include <random>
 #include <cmath>
 #include <fstream>
+#include <algorithm>
 
 NeuralNetwork::NeuralNetwork(std::vector<int> input)
 {
@@ -46,7 +47,8 @@ std::default_random_engine engine;
 
 double rand(double x) // Change later?
 {
-	return range(engine);
+	return 0;
+	//return range(engine);
 }
 
 void NeuralNetwork::initialize()
@@ -158,6 +160,9 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	
 	for (int i = 0; i < epochs; i++) 
 	{
+
+		auto rng = std::default_random_engine {};
+		std::shuffle(std::begin(input), std::end(input), rng);
 		for (int j = 0; j < input.size(); j++) 
 		{
 			activations[0] = v_Input[j];
