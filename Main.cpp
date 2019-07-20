@@ -41,17 +41,18 @@ int main(int argc, char** argv)
 		"mnist-data/train-images-idx3-ubyte", "mnist-data/train-labels-idx1-ubyte");
 
 	std::vector<int> layers = {784, 32, 32, 10};
-	NeuralNetwork nn(layers);
-	//NeuralNetwork nn("02.nn");
+	//NeuralNetwork nn(layers);
+	NeuralNetwork nn("02.nn");
 
 	int num = 2;
 	for (int i = 0; i < num; i++) 
 	{
 		std::cout << images[i] << std::endl;
 		printSTDVec(nn.classify(images[i].toVector()));
+		printSTDVec(output[i]);
 	}
 
-	nn.train(input, output, 1, .0001);
+	nn.train(input, output, 20, .001);
 
 
 	for (int i = 0; i < num; i++) 

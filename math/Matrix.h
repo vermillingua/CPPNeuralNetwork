@@ -3,6 +3,7 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <initializer_list>
 
@@ -56,6 +57,7 @@ public:
 
 	friend Vector operator*(const Matrix& left, const Vector& right); //Def in Vector.cpp
 	friend Matrix operator-(const Matrix& left, const Vector& right);
+	friend Matrix mult(const Vector& right, const Vector& left);
 
 	Matrix& operator=(const Matrix& other);
 	Matrix& operator*=(const Matrix& other);
@@ -68,6 +70,14 @@ public:
 	friend std::ostream& operator<<(std::ostream& cout, const Matrix& matrix);
 	friend std::ofstream& operator<<(std::ofstream& file, const Matrix& matrix);
 	friend std::ifstream& operator>>(std::ifstream& file, Matrix& matrix);
+
+	std::string get_dimentions() const
+	{
+		std::stringstream ss;
+		ss << "r = " << rows;
+		ss << ", c = " << cols;
+		return ss.str();
+	}
 };
 
 #endif /* MATRIX_H */

@@ -152,8 +152,12 @@ Matrix operator+(const Matrix& left, const double& right)
 
 Matrix operator-(const Matrix& left, const Matrix& right)
 {
-	if(left.rows == right.rows && left.cols == right.cols)
-		throw std::runtime_error("Invalid dimensions for subtraction!");
+	if(left.rows != right.rows || left.cols != right.cols) {
+		std::cout << "Failed to sub" << std::endl;
+		std::cout << left.get_dimentions() << std::endl;
+		std::cout << right.get_dimentions() << std::endl;
+		throw std::runtime_error("Invalid dimensions for subtraction! thing");
+	}
 
 	Matrix result(left.rows, left.cols);
 
@@ -194,6 +198,18 @@ Matrix operator-(const Matrix& left, const Vector& right)
 	for (int c = 0; c < result.cols; c++) 
 		for (int r = 0; r < result.rows; r++) 
 			result.set(r, c, left.get(r, c) - right.get(r));
+	return result;
+}
+
+Matrix mult(const Vector& right, const Vector& left)
+{
+	Matrix result(right.length, left.length);
+	for (int r = 0; r < result.rows; r++) {
+		for (int c = 0; c < result.cols; c++) {
+			result.set(r, c, right.get(r) * left.get(c));
+		}
+	}
+
 	return result;
 }
 

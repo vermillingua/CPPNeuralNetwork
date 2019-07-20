@@ -47,8 +47,8 @@ std::default_random_engine engine;
 
 double rand(double x) // Change later?
 {
-	return 0;
-	//return range(engine);
+	//return 0;
+	return range(engine);
 }
 
 void NeuralNetwork::initialize()
@@ -106,7 +106,22 @@ void NeuralNetwork::updateWeightsAndBiases(const Vector errors[], const Vector a
 	for (int i = 0; i < layers; i++) 
 	{
 		biases[i] -= errors[i] * learningRate;
-		weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
+		//weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
+		//std::cout << "weights " << i << std::endl;
+		//std::cout << weights[i].get_dimentions() << std::endl;
+		//std::cout << "activations " << i << std::endl;
+		//std::cout << activations[i].get_dimentions() << std::endl;
+		//std::cout << "Errors " << i << std::endl;
+		//std::cout << errors[i].get_dimentions() << std::endl;
+
+		Matrix a = mult(errors[i], activations[i]);
+		//std::cout << "activations * errors" << std::endl;
+		//std::cout << a.get_dimentions() << std::endl;
+		//std::cout << (a * learningRate).get_dimentions() << std::endl;
+		//std::cout << (weights[i] - (a * learningRate)).get_dimentions() << std::endl;
+
+		weights[i] = weights[i] - (a * learningRate);
+		//std::cout << "Success@" << std::endl;
 	}
 }
 
