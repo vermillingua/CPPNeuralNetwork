@@ -12,49 +12,45 @@ struct Matrix;
 
 struct Vector
 {
+	friend Matrix;
+
 private:
-	unsigned int length;
+	int length;
 	double* elements;
 
-	void setLength(unsigned int length);
+	void set_length(int length);
 
-	inline double get(unsigned int pos) const {
+	inline double get(int pos) const {
 		return elements[pos];
 	}
 
-	inline void set(unsigned int pos, double value) {
+	inline void set(int pos, double value) {
 		elements[pos] = value;
 	}
 
 public:
 	Vector();
-	Vector(unsigned int length);
-	Vector(unsigned int length, double value);
+	Vector(int length);
+	Vector(int length, double value);
 	Vector(const Vector& other);
 	Vector(const std::vector<double> other);
 	Vector(std::initializer_list<double> input);
 
 	~Vector();
 
-	double max();
-	double min();
-	double sum();
-
 	Vector& map(double (*foo)(double));
 
-	std::vector<double> toSTDVector() const;
+	std::vector<double> to_std_vector() const;
 
-	friend Vector operator*(const Vector& right, const Vector& left);
-	friend Vector operator*(const Vector& right, const double& left);
+	static Vector hamming_product(const Vector& right, const Vector& left);
+
 	friend Vector operator+(const Vector& right, const Vector& left);
-	friend Vector operator+(const Vector& right, const double& left);
-	friend Vector operator/(const Vector& right, const double& left);
 	friend Vector operator-(const Vector& right, const Vector& left);
-	friend Vector operator-(const Vector& right, const double& left);
 
+	friend Vector operator*(const Vector& right, const double& left);
 	friend Vector operator*(const Matrix& right, const Vector& left);
-	friend Matrix operator-(const Matrix& right, const Vector& left); //def in Matrix.h
-	friend Matrix mult(const Vector& right, const Vector& left); //def in Matrix.h
+
+	friend Matrix outer_prod(const Vector& right, const Vector& left);
 
 	Vector& operator=(const Vector& other);
 	Vector& operator-=(const Vector& other);
@@ -62,12 +58,6 @@ public:
 	friend std::ostream& operator<<(std::ostream& cout, const Vector& vector);
 	friend std::ofstream& operator<<(std::ofstream& file, const Vector& vector);
 	friend std::ifstream& operator>>(std::ifstream& file, Vector& vector);
-	
-	std::string get_dimentions() const{
-		std::stringstream ss;
-		ss << length;
-		return ss.str();
-	};
 };
 
 #endif /* VECTOR_H */

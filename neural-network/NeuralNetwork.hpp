@@ -27,7 +27,6 @@ private:
 		const Vector& target, Vector errors[]) const;
 	void updateWeightsAndBiases(const Vector errors[], const Vector activations[], 
 		double learningRate);
-	void backPropagation(const Vector& inputs, const Vector& target);
 
 public:
 	

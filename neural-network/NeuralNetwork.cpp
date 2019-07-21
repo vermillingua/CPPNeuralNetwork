@@ -39,15 +39,14 @@ NeuralNetwork::NeuralNetwork(std::string path)
 NeuralNetwork::~NeuralNetwork()
 {
 	delete [] weights;
-	delete[] biases;
+	delete [] biases;
 }
 
 std::uniform_real_distribution<double> range(-1, 1);
 std::default_random_engine engine;
 
-double rand(double x) // Change later?
+double rand(double x)
 {
-	//return 0;
 	return range(engine);
 }
 
@@ -91,12 +90,12 @@ void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector 
 	const Vector& target, Vector errors[]) const
 {
 	Vector t = weighted_inputs[layers - 1];
-	errors[layers - 1] = (activations[layers] - target) * t.map(sigmoidPrime);
+	errors[layers - 1] = Vector::hamming_product(activations[layers] - target, t.map(sigmoidPrime));
 
 	for (int i = layers - 2; i > -1; i--) 
 	{
 		Vector temp = weighted_inputs[i];
-		errors[i] = (weights[i + 1].transpose() * errors[i + 1]) * temp.map(sigmoidPrime);
+		errors[i] = Vector::hamming_product(weights[i + 1].transpose() * errors[i + 1], temp.map(sigmoidPrime));
 	}
 }
 
@@ -106,54 +105,16 @@ void NeuralNetwork::updateWeightsAndBiases(const Vector errors[], const Vector a
 	for (int i = 0; i < layers; i++) 
 	{
 		biases[i] -= errors[i] * learningRate;
-		//weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
-		//std::cout << "weights " << i << std::endl;
-		//std::cout << weights[i].get_dimentions() << std::endl;
-		//std::cout << "activations " << i << std::endl;
-		//std::cout << activations[i].get_dimentions() << std::endl;
-		//std::cout << "Errors " << i << std::endl;
-		//std::cout << errors[i].get_dimentions() << std::endl;
 
-		Matrix a = mult(errors[i], activations[i]);
-		//std::cout << "activations * errors" << std::endl;
-		//std::cout << a.get_dimentions() << std::endl;
-		//std::cout << (a * learningRate).get_dimentions() << std::endl;
-		//std::cout << (weights[i] - (a * learningRate)).get_dimentions() << std::endl;
+		Matrix a = outer_prod(errors[i], activations[i]);
 
 		weights[i] = weights[i] - (a * learningRate);
-		//std::cout << "Success@" << std::endl;
-	}
-}
-
-void NeuralNetwork::backPropagation(const Vector& input, const Vector& target)
-{
-	Vector weighted_inputs[layers]; // z
-	for (int i = 0; i < layers; i++) 
-		weighted_inputs[i] = Vector(1, 0);
-
-	Vector activations[layers + 1];
-	for (int i = 0; i < layers + 1; i++) 
-		activations[i] = Vector(1, 0);
-	activations[0] = input;
-
-	feedForward(activations, weighted_inputs);
-
-	Vector errors[layers]; // delta
-	for (int i = 0; i < layers; i++) 
-		errors[i] = Vector(1, 0);
-
-	generateErrors(weighted_inputs, activations, target, errors);
-
-	for (int i = 0; i < layers; i++) 
-	{
-		biases[i] -= errors[i] * learningRate;
-		weights[i] = weights[i] - (activations[i + 1] * errors[i] * learningRate);
 	}
 }
 
 std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 {
-	return feedForward(Vector(input)).toSTDVector();
+	return feedForward(Vector(input)).to_std_vector();
 }
 
 void NeuralNetwork::train(std::vector<std::vector<double>> input, 
@@ -175,9 +136,6 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	
 	for (int i = 0; i < epochs; i++) 
 	{
-
-		auto rng = std::default_random_engine {};
-		std::shuffle(std::begin(input), std::end(input), rng);
 		for (int j = 0; j < input.size(); j++) 
 		{
 			activations[0] = v_Input[j];

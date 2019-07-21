@@ -10,12 +10,12 @@ Matrix::Matrix(): rows(0), cols(0)
 	elements = NULL;
 }
 
-Matrix::Matrix(unsigned int rows, unsigned int cols): rows(rows), cols(cols)
+Matrix::Matrix(int rows, int cols): rows(rows), cols(cols)
 {
 	elements = new double[size()];
 }
 
-Matrix::Matrix(unsigned int rows, unsigned int cols, double value): rows(rows), cols(cols)
+Matrix::Matrix(int rows, int cols, double value): rows(rows), cols(cols)
 {
 	elements = new double[size()];
 	std::fill(elements, elements + size(), value);
@@ -47,7 +47,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double> > input)
 	}
 }
 
-void Matrix::setDimensions(unsigned int rows, unsigned int cols)
+void Matrix::set_dimensions(int rows, int cols)
 {
 	if(this->rows != rows || this->cols != cols)
 	{
@@ -58,25 +58,9 @@ void Matrix::setDimensions(unsigned int rows, unsigned int cols)
 	}
 }
 
-Matrix Matrix::identity(unsigned int dimensions)
-{
-	Matrix result(dimensions, dimensions, 0);
-	for (int i = 0; i < dimensions; i++)
-		result.set(i, i, 1);
-	return result;
-}
-
 Matrix::~Matrix()
 {
 	delete[] elements;
-}
-
-double Matrix::trace() const
-{
-	double sum = 0;
-	for (int i = 0; i < std::min(rows, cols); i++)
-		sum += get(i, i);
-	return sum;
 }
 
 Matrix Matrix::transpose() const
@@ -153,9 +137,6 @@ Matrix operator+(const Matrix& left, const double& right)
 Matrix operator-(const Matrix& left, const Matrix& right)
 {
 	if(left.rows != right.rows || left.cols != right.cols) {
-		std::cout << "Failed to sub" << std::endl;
-		std::cout << left.get_dimentions() << std::endl;
-		std::cout << right.get_dimentions() << std::endl;
 		throw std::runtime_error("Invalid dimensions for subtraction! thing");
 	}
 
@@ -177,31 +158,7 @@ Matrix operator-(const Matrix& left, const double& right)
 	return result;
 }
 
-Matrix operator^(const Matrix& left, const double& right)
-{
-	Matrix result;
-	result = left;
-
-	for (int i = 0; i < right - 1; i++)
-		result *= left;
-
-	return result;
-}
-
-Matrix operator-(const Matrix& left, const Vector& right)
-{
-	if(left.rows != right.length)
-		throw std::runtime_error("Invalid dimensions for matrix and vector subtration!");
-	
-	Matrix result;
-	result = left;
-	for (int c = 0; c < result.cols; c++) 
-		for (int r = 0; r < result.rows; r++) 
-			result.set(r, c, left.get(r, c) - right.get(r));
-	return result;
-}
-
-Matrix mult(const Vector& right, const Vector& left)
+Matrix outer_prod(const Vector& right, const Vector& left)
 {
 	Matrix result(right.length, left.length);
 	for (int r = 0; r < result.rows; r++) {
@@ -217,7 +174,7 @@ Matrix& Matrix::operator=(const Matrix& other)
 {
 	if (this != &other)
 	{
-		setDimensions(other.rows, other.cols);
+		set_dimensions(other.rows, other.cols);
 		std::copy(other.elements, other.elements + other.size(), elements);
 	}
 	return *this;
@@ -301,7 +258,7 @@ std::ifstream& operator>>(std::ifstream& file, Matrix& matrix)
 	unsigned int c = 0;
 	file.read((char*)(&r), sizeof(unsigned int));
 	file.read((char*)(&c), sizeof(unsigned int));
-	matrix.setDimensions(r, c);
+	matrix.set_dimensions(r, c);
 	file.read((char*)matrix.elements, sizeof(double) * matrix.size());
 	return file;
 }
