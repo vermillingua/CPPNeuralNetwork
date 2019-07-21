@@ -35,8 +35,6 @@ public:
 
 	static void loadFiles(std::ifstream& imageFile, std::ifstream& labelFile, std::vector<Image>& images);
 
-	Image& center();
-
 	std::vector<double> toVector() const;
 
 	friend std::ostream& operator<<(std::ostream& cout, const Image& image);

@@ -55,14 +55,10 @@ void Image::loadFiles(std::ifstream& imageFile, std::ifstream& labelFile, std::v
 	imageFile.read((char*)(&n_cols), sizeof(int32_t));
 	n_cols = reverseInt(n_cols);
 
-	std::cout << "Loading " << number_of_images << " images..." << std::endl;
-
 	images.resize(number_of_images);
 
 	for (int i = 0; i < number_of_images; i++) 
 		imageFile >> images[i];
-
-	std::cout << "Finished loaded images!" << std::endl;
 
 	int32_t magic2 = 0;
 	labelFile.read((char*)(&magic2), sizeof(int32_t));
@@ -81,12 +77,6 @@ void Image::loadFiles(std::ifstream& imageFile, std::ifstream& labelFile, std::v
 		labelFile.read((char*)(&label), sizeof(char));
 		images[i].label = label;
 	}
-}
-
-Image& Image::center()
-{
-	//TODO Use center of mass to center custom images. MNIST ones are already centered.
-	return *this;
 }
 
 std::vector<double> Image::toVector() const

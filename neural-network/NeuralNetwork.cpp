@@ -107,7 +107,6 @@ void NeuralNetwork::updateWeightsAndBiases(const Vector errors[], const Vector a
 		biases[i] -= errors[i] * learningRate;
 
 		Matrix a = outer_prod(errors[i], activations[i]);
-
 		weights[i] = weights[i] - (a * learningRate);
 	}
 }

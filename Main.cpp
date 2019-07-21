@@ -47,13 +47,9 @@ int max(std::vector<double>& list)
 	return max_index;
 }
 
-double benchmark(NeuralNetwork& nn)
+double benchmark(NeuralNetwork& nn, std::vector<std::vector<double>>& input,
+	std::vector<std::vector<double>>& output, std::vector<Image>& images)
 {
-	std::vector<std::vector<double>> input, output;
-	std::vector<Image> images;
-	load_files(input, output, images, 
-		"mnist-data/t10k-images-idx3-ubyte", "mnist-data/t10k-labels-idx1-ubyte");
-
 	int total = images.size();
 	int correct = 0;
 
@@ -69,44 +65,31 @@ double benchmark(NeuralNetwork& nn)
 
 int main(int argc, char** argv)
 {
-	std::vector<std::vector<double>> input, output;
-	std::vector<Image> images;
-	load_files(input, output, images, 
+	std::cout << "Loading files..." << std::endl;
+	std::vector<std::vector<double>> t_input, t_output;
+	std::vector<Image> t_images;
+	load_files(t_input, t_output, t_images, 
 		"mnist-data/train-images-idx3-ubyte", "mnist-data/train-labels-idx1-ubyte");
+
+	std::vector<std::vector<double>> b_input, b_output;
+	std::vector<Image> b_images;
+	load_files(b_input, b_output, b_images, 
+		"mnist-data/t10k-images-idx3-ubyte", "mnist-data/t10k-labels-idx1-ubyte");
+	std::cout << "Finished loading files." << std::endl;
 
 	std::vector<int> layers = {784, 32, 32, 10};
 	//NeuralNetwork nn(layers);
 	NeuralNetwork nn("04.nn");
 
 	std::cout << "Benchmarking..." << std::endl;
+	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 
-	std::cout << benchmark(nn) << std::endl;
-
-
-	//int num = 2;
-	//for (int i = 0; i < num; i++) 
-	//{
-	//	std::cout << images[i] << std::endl;
-	//	printSTDVec(nn.classify(images[i].toVector()));
-	//	printSTDVec(output[i]);
-	//}
-	
 	std::cout << "Training..." << std::endl;
-
-	nn.train(input, output, 1, .01);
-
+	nn.train(t_input, t_output, 1, .01);
 	std::cout << "Finished Training!" << std::endl;
-
-	//for (int i = 0; i < num; i++) 
-	//{
-	//	printSTDVec(nn.classify(images[i].toVector()));
-	//}
-
-	//std::cout << images.size() << std::endl;
 	
 	std::cout << "Benchmarking..." << std::endl;
-
-	std::cout << benchmark(nn) << std::endl;
+	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 
 	nn.saveTo("04.nn");
 

@@ -16,9 +16,6 @@ private:
 	Vector* biases;
 	unsigned int layers;
 
-	unsigned int batchSize = 10;
-	double learningRate = .01;
-
 	void initialize();
 
 	Vector feedForward(const Vector& input) const;
@@ -30,22 +27,11 @@ private:
 
 public:
 	
-	void setBatchSize(unsigned int size) {
-		batchSize = size;
-	}
-
-	void setLearningRate(double rate) {
-		learningRate = rate;
-	}
-
 	NeuralNetwork(std::vector<int> layers);
 	NeuralNetwork(std::string path);
 	~NeuralNetwork();
 
 	std::vector<double> classify(std::vector<double> input) const;
-
-	void train(std::vector<std::vector<double>> trainingData, 
-		std::vector<std::vector<double>> trainingLabels);
 
 	void train(std::vector<std::vector<double>> input, std::vector<std::vector<double>> output,
 		int epochs, double learningRate);
