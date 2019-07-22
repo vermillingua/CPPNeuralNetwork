@@ -77,9 +77,9 @@ int main(int argc, char** argv)
 		"mnist-data/t10k-images-idx3-ubyte", "mnist-data/t10k-labels-idx1-ubyte");
 	std::cout << "Finished loading files." << std::endl;
 
-	std::vector<int> layers = {784, 32, 32, 10};
-	//NeuralNetwork nn(layers);
-	NeuralNetwork nn("04.nn");
+	std::vector<int> layers = {784, 512, 10};
+	NeuralNetwork nn(layers);
+	//NeuralNetwork nn("deep1.nn");
 
 	std::cout << "Benchmarking..." << std::endl;
 	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
 	std::cout << "Benchmarking..." << std::endl;
 	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 
-	nn.saveTo("04.nn");
+	nn.saveTo("shallow1.nn");
 
 	return -1;
 }

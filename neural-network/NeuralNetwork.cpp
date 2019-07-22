@@ -116,6 +116,17 @@ std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
 	return feedForward(Vector(input)).to_std_vector();
 }
 
+void c_shuffle(int* list, int size)
+{
+	for (int i = size - 1; i > 0; i--)
+	{
+		int j = rand() % (i + 1);
+		int t = list[i];
+		list[i] = list[j];
+		list[j] = t;
+	}
+}
+
 void NeuralNetwork::train(std::vector<std::vector<double>> input, 
 	std::vector<std::vector<double>> output, int epochs, double learningRate)
 {
@@ -132,13 +143,20 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	Vector weighted_inputs[layers]; // z
 	Vector activations[layers + 1]; // a
 	Vector errors[layers]; // delta
+
+	int list[input.size()];
+	for (int i = 0; i < input.size(); i++) 
+		list[i] = i;
 	
 	for (int i = 0; i < epochs; i++) 
 	{
+		std::cout << "Starting epoch " << (i + 1) << " (of " << epochs << ")..." << std::endl;
+		c_shuffle(list, input.size());
 		for (int j = 0; j < input.size(); j++) 
 		{
-			activations[0] = v_Input[j];
-			target = v_Output[j];
+			int index = list[j];
+			activations[0] = v_Input[index];
+			target = v_Output[index];
 			
 			feedForward(weighted_inputs, activations);
 			generateErrors(weighted_inputs, activations, target, errors);
