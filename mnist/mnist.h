@@ -9,16 +9,16 @@
 struct Image
 {
 private:
-	unsigned int label;
-	unsigned int rows;
-	unsigned int cols;
+	int label;
+	int rows;
+	int cols;
 	unsigned char* pixels;
 
-	inline unsigned char get(int row, int col) const {
+	inline char get(int row, int col) const {
 		return pixels[row * cols + col];
 	}
 
-	inline unsigned int size() const {
+	inline int size() const {
 		return rows * cols;
 	}
 
@@ -29,7 +29,7 @@ public:
 	Image();
 	~Image();
 
-	unsigned int getLabel() const {
+	int getLabel() const {
 		return label;
 	}
 

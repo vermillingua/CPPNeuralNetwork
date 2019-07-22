@@ -71,7 +71,7 @@ void Image::loadFiles(std::ifstream& imageFile, std::ifstream& labelFile, std::v
 	if(number_of_images != number_of_labels)
 		std::cout << "PROB!" << std::endl;
 
-	unsigned char label = 0;
+	char label = 0;
 	for (int i = 0; i < number_of_labels; i++) 
 	{
 		labelFile.read((char*)(&label), sizeof(char));
