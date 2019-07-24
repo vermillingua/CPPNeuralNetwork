@@ -66,40 +66,52 @@ double benchmark(NeuralNetwork& nn, std::vector<std::vector<double>>& input,
 	return (double)correct / total;
 }
 
+const std::string train_images = "mnist-data/train-images-idx3-ubyte";
+const std::string train_labels = "mnist-data/train-labels-idx1-ubyte";
+const std::string test_images = "mnist-data/t10k-images-idx3-ubyte";
+const std::string test_labels = "mnist-data/t10k-labels-idx1-ubyte";
+
 int main(int argc, char** argv)
 {
 	std::cout << "Loading files..." << std::endl;
 	std::vector<std::vector<double>> t_input, t_output;
 	std::vector<Image> t_images;
 	load_files(t_input, t_output, t_images, 
-		"mnist-data/train-images-idx3-ubyte", "mnist-data/train-labels-idx1-ubyte");
+		train_images, train_labels);
 
 	std::vector<std::vector<double>> b_input, b_output;
 	std::vector<Image> b_images;
 	load_files(b_input, b_output, b_images, 
-		"mnist-data/t10k-images-idx3-ubyte", "mnist-data/t10k-labels-idx1-ubyte");
+		test_images, test_labels);
 	std::cout << "Finished loading files." << std::endl;
 
 	std::vector<int> layers = {784, 16, 16, 10};
-	NeuralNetwork nn(layers);
-	//NeuralNetwork nn("deep1.nn");
+	std::string save_path = "shallow2.nn";
+
+	//NeuralNetwork nn(layers); // Create a new nn with the specified layers.
+	NeuralNetwork nn = std::ifstream(save_path); // Load from save_path file.
+
+	stopwatch sw;
 
 	std::cout << "Benchmarking..." << std::endl;
-	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
+	sw.start();
+	double percentage = benchmark(nn, b_input, b_output, b_images);
+	sw.stop();
+	std::cout << "Finished benchmarking in " << sw << " - " << (percentage * 100) << "% acurate." << std::endl;
 
 	std::cout << "Training..." << std::endl;
-
-	stopwatch s;
-	s.start();
+	sw.start();
 	nn.train(t_input, t_output, 1, .01);
-	s.stop();
-
-	std::cout << "Finished Training in " << s << std::endl;
+	sw.stop();
+	std::cout << "Finished Training in " << sw << std::endl;
 	
 	std::cout << "Benchmarking..." << std::endl;
-	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
+	sw.start();
+	percentage = benchmark(nn, b_input, b_output, b_images);
+	sw.stop();
+	std::cout << "Finished benchmarking in " << sw << " - " << (percentage * 100) << "% acurate." << std::endl;
 
-	nn.saveTo("shallow2.nn");
+	nn.saveTo(std::ofstream(save_path)); // Save nn to the save_path file.
 
 	return -1;
 }

@@ -3,7 +3,6 @@
 
 #include <random>
 #include <cmath>
-#include <fstream>
 #include <algorithm>
 
 NeuralNetwork::NeuralNetwork(std::vector<int> input)
@@ -19,9 +18,8 @@ NeuralNetwork::NeuralNetwork(std::vector<int> input)
 	initialize();
 }
 
-NeuralNetwork::NeuralNetwork(std::string path)
+NeuralNetwork::NeuralNetwork(std::ifstream file)
 {
-	std::ifstream file(path);
 	if(file.is_open())
 	{
 		file.read((char*)(&layers), sizeof(unsigned int));
@@ -33,7 +31,11 @@ NeuralNetwork::NeuralNetwork(std::string path)
 			file >> biases[i];
 		}
 	}
-	file.close();
+	else
+	{
+		std::cerr << "Failed to open neural network file!" << std::endl;
+		std::exit(-1);
+	}
 }
 
 NeuralNetwork::~NeuralNetwork()
@@ -150,7 +152,6 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	
 	for (int i = 0; i < epochs; i++) 
 	{
-		std::cout << "Starting epoch " << (i + 1) << " (of " << epochs << ")..." << std::endl;
 		c_shuffle(list, input.size());
 		for (int j = 0; j < input.size(); j++) 
 		{
@@ -165,14 +166,13 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	}
 }
 
-void NeuralNetwork::saveTo(std::string path) const
+void NeuralNetwork::saveTo(std::ofstream file) const
 {
-	std::ofstream file(path);
 	file.write((char*)(&layers), sizeof(unsigned int));
 	for (int i = 0; i < layers; i++) 
 	{
 		file << weights[i];
 		file << biases[i];
 	}
-	file.close();
+	file.flush();
 }

@@ -3,7 +3,7 @@
 #define NEURALNETWORK_HPP
 
 #include <vector>
-#include <string>
+#include <fstream>
 
 #include "../math/Matrix.h"
 #include "../math/Vector.h"
@@ -28,7 +28,7 @@ private:
 public:
 	
 	NeuralNetwork(std::vector<int> layers);
-	NeuralNetwork(std::string path);
+	NeuralNetwork(std::ifstream file);
 	~NeuralNetwork();
 
 	std::vector<double> classify(std::vector<double> input) const;
@@ -36,7 +36,7 @@ public:
 	void train(std::vector<std::vector<double>> input, std::vector<std::vector<double>> output,
 		int epochs, double learningRate);
 
-	void saveTo(std::string path) const;
+	void saveTo(std::ofstream file) const;
 };
 
 void rawToCSV(std::string rawPath, std::string csvDir);
