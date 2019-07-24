@@ -2,9 +2,12 @@
 #include <random>
 
 #include "neural-network/NeuralNetwork.hpp"
+#include "stopwatch/stopwatch.h"
 //#include "mnist/mnist.h"
 
 #include "math/Vector.h"
+
+using namespace sw;
 
 template<typename T>
 void printSTDVec(std::vector<T> vec)
@@ -77,7 +80,7 @@ int main(int argc, char** argv)
 		"mnist-data/t10k-images-idx3-ubyte", "mnist-data/t10k-labels-idx1-ubyte");
 	std::cout << "Finished loading files." << std::endl;
 
-	std::vector<int> layers = {784, 512, 10};
+	std::vector<int> layers = {784, 16, 16, 10};
 	NeuralNetwork nn(layers);
 	//NeuralNetwork nn("deep1.nn");
 
@@ -85,13 +88,18 @@ int main(int argc, char** argv)
 	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 
 	std::cout << "Training..." << std::endl;
+
+	stopwatch s;
+	s.start();
 	nn.train(t_input, t_output, 1, .01);
-	std::cout << "Finished Training!" << std::endl;
+	s.stop();
+
+	std::cout << "Finished Training in " << s << std::endl;
 	
 	std::cout << "Benchmarking..." << std::endl;
 	std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 
-	nn.saveTo("shallow1.nn");
+	nn.saveTo("shallow2.nn");
 
 	return -1;
 }
