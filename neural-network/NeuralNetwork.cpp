@@ -149,6 +149,8 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 	int list[input.size()];
 	for (int i = 0; i < input.size(); i++) 
 		list[i] = i;
+
+	srand(time(NULL));
 	
 	for (int i = 0; i < epochs; i++) 
 	{

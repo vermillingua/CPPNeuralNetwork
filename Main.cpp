@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 
 	std::cout << "Training..." << std::endl;
 	sw.start();
-	nn.train(t_input, t_output, 1, .01);
+	nn.train(t_input, t_output, 1, .0001);
 	sw.stop();
 	std::cout << "Finished Training in " << sw << std::endl;
 	
