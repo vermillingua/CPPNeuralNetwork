@@ -50,6 +50,28 @@ Vector& Vector::map(data_type (*foo)(data_type))
 	return *this;
 }
 
+int Vector::max_index() const
+{
+	int max_index = -1;
+	double max_value = -100000;
+	for (int i = 0; i < m_length; i++) 
+	{
+		if(get(i) > max_value)
+		{
+			max_value = get(i);
+			max_index = i;
+		}
+	}
+	return max_index;
+}
+
+double& Vector::operator[](int index)
+{
+	verify(index >= 0 && index < m_length,
+		"Index out of bounds! :(");
+	return get(index);
+}
+
 std::vector<data_type> Vector::to_std_vector() const 
 {
 	std::vector<data_type> result(m_length);

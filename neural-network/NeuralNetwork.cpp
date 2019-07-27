@@ -5,15 +5,15 @@
 #include <cmath>
 #include <algorithm>
 
-NeuralNetwork::NeuralNetwork(std::vector<int> input)
+NeuralNetwork::NeuralNetwork(const std::vector<int>& input)
 {
-	this->layers = input.size() - 1;
-	weights = new Matrix[layers];
-	biases = new Vector[layers];
-	for (int i = 0; i < this->layers; i++) 
+	m_layers = input.size() - 1;
+	m_weights = new Matrix[m_layers];
+	m_biases = new Vector[m_layers];
+	for (int i = 0; i < m_layers; i++) 
 	{
-		weights[i] = Matrix(input[i + 1], input[i], 0);
-		biases[i] = Vector(input[i + 1], 0);
+		m_weights[i] = Matrix(input[i + 1], input[i], 0);
+		m_biases[i] = Vector(input[i + 1], 0);
 	}
 	initialize();
 }
@@ -22,13 +22,13 @@ NeuralNetwork::NeuralNetwork(std::ifstream file)
 {
 	if(file.is_open())
 	{
-		file.read((char*)(&layers), sizeof(unsigned int));
-		weights = new Matrix[layers];
-		biases = new Vector[layers];
-		for (int i = 0; i < layers; i++) 
+		file.read((char*)(&m_layers), sizeof(unsigned int));
+		m_weights = new Matrix[m_layers];
+		m_biases = new Vector[m_layers];
+		for (int i = 0; i < m_layers; i++) 
 		{
-			file >> weights[i];
-			file >> biases[i];
+			file >> m_weights[i];
+			file >> m_biases[i];
 		}
 	}
 	else
@@ -40,8 +40,8 @@ NeuralNetwork::NeuralNetwork(std::ifstream file)
 
 NeuralNetwork::~NeuralNetwork()
 {
-	delete [] weights;
-	delete [] biases;
+	delete [] m_weights;
+	delete [] m_biases;
 }
 
 std::uniform_real_distribution<double> range(-1, 1);
@@ -54,9 +54,9 @@ double rand(double x)
 
 void NeuralNetwork::initialize()
 {
-	for (int i = 0; i < layers; i++) {
-		weights[i].map(rand);
-		biases[i].map(rand);
+	for (int i = 0; i < m_layers; i++) {
+		m_weights[i].map(rand);
+		m_biases[i].map(rand);
 	}
 }
 
@@ -70,52 +70,52 @@ double sigmoidPrime(double x)
 	return sigmoid(x) * (1 - sigmoid(x));
 }
 
-Vector NeuralNetwork::feedForward(const Vector& input) const
+Vector NeuralNetwork::feed_forward(const Vector& input) const
 {
 	Vector result = input;
-	for (int i = 0; i < layers; i++) 
-		result = (weights[i] * result + biases[i]).map(sigmoid);
+	for (int i = 0; i < m_layers; i++) 
+		result = (m_weights[i] * result + m_biases[i]).map(sigmoid);
 	return result;
 }
 
-void NeuralNetwork::feedForward(Vector weighted_inputs[], Vector activations[]) const
+void NeuralNetwork::feed_forward(Vector weighted_inputs[], Vector activations[]) const
 {
-	for (int i = 0; i < layers; i++) 
+	for (int i = 0; i < m_layers; i++) 
 	{
-		weighted_inputs[i] = weights[i] * activations[i] + biases[i];
+		weighted_inputs[i] = m_weights[i] * activations[i] + m_biases[i];
 		activations[i + 1] = weighted_inputs[i];
 		activations[i + 1].map(sigmoid);
 	}
 }
 
-void NeuralNetwork::generateErrors(const Vector weighted_inputs[], const Vector activations[], 
+void NeuralNetwork::generate_errors(const Vector weighted_inputs[], const Vector activations[], 
 	const Vector& target, Vector errors[]) const
 {
-	Vector t = weighted_inputs[layers - 1];
-	errors[layers - 1] = Vector::hamming_product(activations[layers] - target, t.map(sigmoidPrime));
+	Vector t = weighted_inputs[m_layers - 1];
+	errors[m_layers - 1] = Vector::hamming_product(activations[m_layers] - target, t.map(sigmoidPrime));
 
-	for (int i = layers - 2; i > -1; i--) 
+	for (int i = m_layers - 2; i > -1; i--) 
 	{
 		Vector temp = weighted_inputs[i];
-		errors[i] = Vector::hamming_product(weights[i + 1].transpose() * errors[i + 1], temp.map(sigmoidPrime));
+		errors[i] = Vector::hamming_product(m_weights[i + 1].transpose() * errors[i + 1], temp.map(sigmoidPrime));
 	}
 }
 
-void NeuralNetwork::updateWeightsAndBiases(const Vector errors[], const Vector activations[], 
+void NeuralNetwork::update_weights_and_biases(const Vector errors[], const Vector activations[], 
 	double learningRate)
 {
-	for (int i = 0; i < layers; i++) 
+	for (int i = 0; i < m_layers; i++) 
 	{
-		biases[i] -= errors[i] * learningRate;
+		m_biases[i] -= errors[i] * learningRate;
 
 		Matrix a = outer_prod(errors[i], activations[i]);
-		weights[i] = weights[i] - (a * learningRate);
+		m_weights[i] = m_weights[i] - (a * learningRate);
 	}
 }
 
-std::vector<double> NeuralNetwork::classify(std::vector<double> input) const
+int NeuralNetwork::classify(const Vector& input) const
 {
-	return feedForward(Vector(input)).to_std_vector();
+	return feed_forward(input).max_index();
 }
 
 void c_shuffle(int* list, int size)
@@ -129,22 +129,14 @@ void c_shuffle(int* list, int size)
 	}
 }
 
-void NeuralNetwork::train(std::vector<std::vector<double>> input, 
-	std::vector<std::vector<double>> output, int epochs, double learningRate)
+void NeuralNetwork::train(const std::vector<Vector>& input, 
+	const std::vector<Vector>& output, int epochs, double learningRate)
 {
-	std::vector<Vector> v_Input(input.size());
-	for (int i = 0; i < v_Input.size(); i++) 
-		v_Input[i] = Vector(input[i]);
-	
-	std::vector<Vector> v_Output(output.size());
-	for (int i = 0; i < v_Output.size(); i++) 
-		v_Output[i] = Vector(output[i]);
-	
 	Vector target;
 
-	Vector weighted_inputs[layers]; // z
-	Vector activations[layers + 1]; // a
-	Vector errors[layers]; // delta
+	Vector weighted_inputs[m_layers]; // z
+	Vector activations[m_layers + 1]; // a
+	Vector errors[m_layers]; // delta
 
 	int list[input.size()];
 	for (int i = 0; i < input.size(); i++) 
@@ -158,23 +150,23 @@ void NeuralNetwork::train(std::vector<std::vector<double>> input,
 		for (int j = 0; j < input.size(); j++) 
 		{
 			int index = list[j];
-			activations[0] = v_Input[index];
-			target = v_Output[index];
+			activations[0] = input[index];
+			target = output[index];
 			
-			feedForward(weighted_inputs, activations);
-			generateErrors(weighted_inputs, activations, target, errors);
-			updateWeightsAndBiases(errors, activations, learningRate);
+			feed_forward(weighted_inputs, activations);
+			generate_errors(weighted_inputs, activations, target, errors);
+			update_weights_and_biases(errors, activations, learningRate);
 		}
 	}
 }
 
-void NeuralNetwork::saveTo(std::ofstream file) const
+void NeuralNetwork::save_to(std::ofstream file) const
 {
-	file.write((char*)(&layers), sizeof(unsigned int));
-	for (int i = 0; i < layers; i++) 
+	file.write((char*)(&m_layers), sizeof(unsigned int));
+	for (int i = 0; i < m_layers; i++) 
 	{
-		file << weights[i];
-		file << biases[i];
+		file << m_weights[i];
+		file << m_biases[i];
 	}
 	file.flush();
 }

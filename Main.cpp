@@ -3,21 +3,13 @@
 
 #include "neural-network/NeuralNetwork.hpp"
 #include "stopwatch/stopwatch.h"
-//#include "mnist/mnist.h"
+#include "mnist/mnist.h"
 
 #include "math/Vector.h"
 
 using namespace sw;
 
-template<typename T>
-void printSTDVec(std::vector<T> vec)
-{
-	for (auto i = vec.begin(); i != vec.end(); i++)
-		std::cout << *i << " ";
-	std::cout << std::endl;
-}
-
-void load_files(std::vector<std::vector<double>>& input, std::vector<std::vector<double>>& output,
+void load_files(std::vector<Vector>& input, std::vector<Vector>& output,
 	std::vector<Image>& images, std::string image_file_path, std::string label_file_path)
 {
 	std::ifstream image_file(image_file_path);
@@ -31,34 +23,19 @@ void load_files(std::vector<std::vector<double>>& input, std::vector<std::vector
 	for (int i = 0; i < images.size(); i++) 
 	{
 		input[i] = images[i].toVector();
-		output[i] = std::vector<double>(10, 0.0);
+		output[i] = Vector(10, 0.0);
 		output[i][images[i].getLabel()] = 1;
 	}
 }
 
-int max(std::vector<double>& list)
-{
-	double max = -100000;
-	int max_index = -1;
-	for (int i = 0; i < list.size(); i++) {
-		if(list[i] > max)
-		{
-			max = list[i];
-			max_index = i;
-		}
-	}
-	return max_index;
-}
-
-double benchmark(NeuralNetwork& nn, std::vector<std::vector<double>>& input,
-	std::vector<std::vector<double>>& output, std::vector<Image>& images)
+double benchmark(NeuralNetwork& nn, std::vector<Vector>& input,
+	std::vector<Vector>& output, std::vector<Image>& images)
 {
 	int total = images.size();
 	int correct = 0;
 
 	for (int i = 0; i < total; i++) {
-		std::vector<double> out = (nn.classify(input[i]));
-		int m = max(out);
+		int m = nn.classify(input[i]);
 
 		if(m == images[i].getLabel())
 			correct++;
@@ -74,12 +51,12 @@ const std::string test_labels = "mnist-data/t10k-labels-idx1-ubyte";
 int main(int argc, char** argv)
 {
 	std::cout << "Loading files..." << std::endl;
-	std::vector<std::vector<double>> t_input, t_output;
+	std::vector<Vector> t_input, t_output;
 	std::vector<Image> t_images;
 	load_files(t_input, t_output, t_images, 
 		train_images, train_labels);
 
-	std::vector<std::vector<double>> b_input, b_output;
+	std::vector<Vector> b_input, b_output;
 	std::vector<Image> b_images;
 	load_files(b_input, b_output, b_images, 
 		test_images, test_labels);
@@ -88,8 +65,8 @@ int main(int argc, char** argv)
 	std::vector<int> layers = {784, 16, 16, 10};
 	std::string save_path = "shallow2.nn";
 
-	//NeuralNetwork nn(layers); // Create a new nn with the specified layers.
-	NeuralNetwork nn = std::ifstream(save_path); // Load from save_path file.
+	NeuralNetwork nn(layers); // Create a new nn with the specified layers.
+	//NeuralNetwork nn = std::ifstream(save_path); // Load from save_path file.
 
 	stopwatch sw;
 
@@ -101,7 +78,7 @@ int main(int argc, char** argv)
 
 	std::cout << "Training..." << std::endl;
 	sw.start();
-	nn.train(t_input, t_output, 1, .0001);
+	nn.train(t_input, t_output, 1, .01);
 	sw.stop();
 	std::cout << "Finished Training in " << sw << std::endl;
 	
@@ -111,7 +88,7 @@ int main(int argc, char** argv)
 	sw.stop();
 	std::cout << "Finished benchmarking in " << sw << " - " << (percentage * 100) << "% acurate." << std::endl;
 
-	nn.saveTo(std::ofstream(save_path)); // Save nn to the save_path file.
+	//nn.save_to(std::ofstream(save_path)); // Save nn to the save_path file.
 
 	return -1;
 }

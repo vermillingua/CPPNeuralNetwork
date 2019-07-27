@@ -5,40 +5,36 @@
 #include <vector>
 #include <fstream>
 
-#include "../math/Matrix.h"
-#include "../math/Vector.h"
-#include "../mnist/mnist.h"
+#include "../math/LinearAlgebra.h"
 
 struct NeuralNetwork
 {
 private:
-	Matrix* weights;
-	Vector* biases;
-	unsigned int layers;
+	Matrix* m_weights;
+	Vector* m_biases;
+	unsigned int m_layers;
 
 	void initialize();
 
-	Vector feedForward(const Vector& input) const;
-	void feedForward(Vector weighted_inputs[], Vector activations[]) const;
-	void generateErrors(const Vector weighted_inputs[], const Vector activations[], 
+	Vector feed_forward(const Vector& input) const;
+	void feed_forward(Vector weighted_inputs[], Vector activations[]) const;
+	void generate_errors(const Vector weighted_inputs[], const Vector activations[], 
 		const Vector& target, Vector errors[]) const;
-	void updateWeightsAndBiases(const Vector errors[], const Vector activations[], 
+	void update_weights_and_biases(const Vector errors[], const Vector activations[], 
 		double learningRate);
 
 public:
 	
-	NeuralNetwork(std::vector<int> layers);
+	NeuralNetwork(const std::vector<int>& layers);
 	NeuralNetwork(std::ifstream file);
 	~NeuralNetwork();
 
-	std::vector<double> classify(std::vector<double> input) const;
+	int classify(const Vector& input) const;
 
-	void train(std::vector<std::vector<double>> input, std::vector<std::vector<double>> output,
+	void train(const std::vector<Vector>& input, const std::vector<Vector>& output,
 		int epochs, double learningRate);
 
-	void saveTo(std::ofstream file) const;
+	void save_to(std::ofstream file) const;
 };
-
-void rawToCSV(std::string rawPath, std::string csvDir);
 
 #endif /* NEURALNETWORK_HPP */

@@ -18,7 +18,7 @@ private:
 	int m_length;
 	data_type* m_elements;
 
-	inline data_type get(int pos) const 
+	inline data_type& get(int pos) const 
 	{
 		return m_elements[pos];
 	}
@@ -42,9 +42,13 @@ public:
 
 	Vector& map(data_type (*foo)(data_type));
 
+	int max_index() const;
+
 	std::vector<data_type> to_std_vector() const;
 
 	static Vector hamming_product(const Vector& right, const Vector& left);
+
+	data_type& operator[](int index);
 
 	friend Vector operator+(const Vector& right, const Vector& left);
 	friend Vector operator-(const Vector& right, const Vector& left);
