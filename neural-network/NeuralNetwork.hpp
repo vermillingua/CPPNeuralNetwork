@@ -25,9 +25,12 @@ private:
 
 public:
 	
+	NeuralNetwork(int layers);
 	NeuralNetwork(const std::vector<int>& layers);
 	NeuralNetwork(std::ifstream file);
 	~NeuralNetwork();
+
+	void operator=(const NeuralNetwork& other);
 
 	int classify(const Vector& input) const;
 

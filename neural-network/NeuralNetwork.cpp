@@ -5,6 +5,13 @@
 #include <cmath>
 #include <algorithm>
 
+NeuralNetwork::NeuralNetwork(int layers)
+{
+	m_layers = layers;
+	m_weights = new Matrix[m_layers];
+	m_biases = new Vector[m_layers];
+}
+
 NeuralNetwork::NeuralNetwork(const std::vector<int>& input)
 {
 	m_layers = input.size() - 1;
@@ -42,6 +49,23 @@ NeuralNetwork::~NeuralNetwork()
 {
 	delete [] m_weights;
 	delete [] m_biases;
+}
+
+void NeuralNetwork::operator=(const NeuralNetwork& other)
+{
+	if(m_layers != other.m_layers)
+	{
+		delete [] m_weights;
+		delete [] m_biases;
+		m_layers = other.m_layers;
+		m_weights = new Matrix[m_layers];
+		m_biases = new Vector[m_layers];
+	}
+
+	for (int i = 0; i < m_layers; i++) {
+		m_weights[i] = other.m_weights[i];
+		m_biases[i] = other.m_biases[i];
+	}
 }
 
 std::uniform_real_distribution<double> range(-1, 1);
