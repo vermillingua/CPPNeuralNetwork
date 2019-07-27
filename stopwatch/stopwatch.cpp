@@ -60,8 +60,11 @@ std::string stopwatch::format_time(const duration<double>& time)
 	return ss.str();
 }
 
-std::ostream& sw::operator<<(std::ostream& out, const stopwatch& sw)
+namespace sw
 {
-	out << sw.get_total_str();
-	return out;
+	std::ostream& operator<<(std::ostream& out, const stopwatch& sw)
+	{
+		out << sw.get_total_str();
+		return out;
+	}
 }
