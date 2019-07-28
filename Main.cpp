@@ -43,6 +43,13 @@ double benchmark(NeuralNetwork& nn, std::vector<Vector>& input,
 	return (double)correct / total;
 }
 
+void log(std::string path, double accuracy, double learning_rate, bool saved)
+{
+	std::ofstream file;
+	file.open(path, std::ios_base::app);
+	file << accuracy << "," << learning_rate << "," << (saved ? "true": "false") << std::endl;
+}
+
 const std::string train_images = "mnist-data/train-images-idx3-ubyte";
 const std::string train_labels = "mnist-data/train-labels-idx1-ubyte";
 const std::string test_images = "mnist-data/t10k-images-idx3-ubyte";
@@ -64,14 +71,15 @@ int main(int argc, char** argv)
 
 	std::vector<int> layers = {784, 16, 16, 10};
 	std::string save_path = "shallow6.nn";
+	std::string log_path = "shallow6.csv";
 
-	int epochs = 20;
-	double learning_rate = 0.1;
+	int epochs = 40;
+	double learning_rate = 0.001;
 	double learning_rate_rate = 0.5;
-	int forgiveness = 1;
+	int forgiveness = 3;
 
-	NeuralNetwork nn(layers); // Create a new nn with the specified layers.
-	//NeuralNetwork nn = std::ifstream(save_path); // Load from save_path file.
+	//NeuralNetwork nn(layers); // Create a new nn with the specified layers.
+	NeuralNetwork nn = std::ifstream(save_path); // Load from save_path file.
 
 	stopwatch sw;
 	NeuralNetwork temp_nn(layers);
@@ -86,7 +94,7 @@ int main(int argc, char** argv)
 
 	for (int i = 0; i < epochs; i++) 
 	{
-		//std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
+		std::cout << benchmark(nn, b_input, b_output, b_images) << std::endl;
 		std::cout << "Training (" << (i + 1) << " of " << epochs << ")..." << std::endl;
 		sw.start();
 		nn.train(t_input, t_output, 1, learning_rate);
@@ -99,10 +107,12 @@ int main(int argc, char** argv)
 			temp_nn = nn;
 			forg = 0;
 			nn.save_to(std::ofstream(save_path));
+			log(log_path, p2, learning_rate, true);
 		}
 		else
 		{
 			std::cout << "Lost accuracy. Forgiveness left " << (forgiveness - forg) << std::endl;
+			log(log_path, p2, learning_rate, false);
 			forg++;
 			if(forg > forgiveness)
 			{

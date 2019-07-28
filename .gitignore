@@ -13,5 +13,8 @@ Main
 # Custom Neural Network saves
 *.nn
 
+# CSV Files
+*.csv
+
 # Ignore mnist data files
 mnist-data
